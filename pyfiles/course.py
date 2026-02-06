@@ -1,4 +1,7 @@
+from student import Student
+
 class Course:
+
     def __init__(self, course_code: str, credits: int, students: list[Student]):
         pass
 
@@ -7,6 +10,3 @@ class Course:
 
     def get_student_count(self) -> int:
         pass
-
-class Student:
-    pass
