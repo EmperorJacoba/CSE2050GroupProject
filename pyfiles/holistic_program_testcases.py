@@ -23,6 +23,9 @@ class TestCourse(unittest.TestCase):
         course1.add_student(student1)
         self.assertEqual(course1.get_student_count(),1)
 
+# Make sure to add tests that check validation
+# e.g. pass in invalid student IDs, invalid grades, and make sure they bounce
+# Also check to make sure duplicate entries are rejected/show no change
 class TestStudent(unittest.TestCase):
     def test_init(self):
         student1 = Student("STU94146", "Alex", {})
@@ -43,7 +46,7 @@ class TestStudent(unittest.TestCase):
         self.assertEqual(student1.get_course_info, "Course: MATH 1132Q, Credits: 4, Grade: A")
 
 
-class TestUniveristy(unittest.TestCase):
+class TestUniversity(unittest.TestCase):
     pass
 
 if __name__ == '__main__':

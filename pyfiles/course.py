@@ -1,4 +1,4 @@
-from student import Student
+from student import Student, Grade
 
 class Course:
     """
@@ -15,13 +15,24 @@ class Course:
         :param credits: number of credits earned for completing the course.
         :param students: list of all students enrolled in this course.
         """
+        self.course_code = course_code
+        self.credits = credits
+        self.students = students
 
-        pass
+    def add_student(self, student: Student, grade: Grade = Grade("F")) -> None:
+        """
+        Add a student to this course's student roster.
+        :param student: The student to add to the course.
+        :param grade: A grade object representing the grade of the student in the course (if known). "F" (0.0 grade points) by default.
+        If the student is already present in the roster, updates the grade of the student.
+        """
 
-    def add_student(self, student: Student):
-        """Add a student to this course's student roster."""
-        pass
+        if student not in self.students:
+            self.students.append(student)
+            student.enroll(self, grade)
+        else:
+            student.update_grade(self, grade)
 
     def get_student_count(self) -> int:
         """Get the number of students currently enrolled in this course."""
-        pass
+        return len(self.students)
