@@ -1,15 +1,11 @@
-import math
-
 from course import Course
 import misc_tools
-
 
 class Grade:
     """
     A representation of a letter grade. Can be instantiated as a letter grade, integer grade, or decimal grade
     and can be converted to a grade point easily with get_grade_point().
     """
-
 
     GRADE_POINTS = {
         'A': 4.0,
@@ -74,6 +70,25 @@ class Grade:
     def get_grade_point(self) -> float:
         return Grade.GRADE_POINTS[self.grade]
 
+    def __str__(self):
+        return self.grade
+
+
+def validate_student_id(student_id: str) -> bool:
+
+    err_string = ""
+
+    if len(student_id) != 8:
+        err_string += f"Student ID {student_id} is invalid. ID string must be eight characters\n"
+
+    if student_id[0:2] != "STU":
+        err_string += f"Student ID {student_id} is invalid. ID string must start with \"STU\".\n"
+
+    if err_string != "":
+        raise ValueError(err_string)
+
+    return True
+
 class Student:
     """
     A representation of a given student at a University.\n
@@ -95,10 +110,15 @@ class Student:
                         Key: the course at hand (as a Course object).
                         Value: The letter grade of the student. (e.g. "A", "B+").
         """
-        self.student_id = student_id
+
+        if validate_student_id(student_id):
+            self.student_id = student_id
+
+        if len(name) == 0:
+            raise ValueError("Student name must not be empty.")
+
         self.name = name
         self.courses = courses
-        pass
 
     # Use a grade class (setup below) to store and validate grades from string
     # Allows easy storage, calculation, conversion of grades. Convert from string formatted like "A+" or float like 98.0
@@ -109,7 +129,11 @@ class Student:
         :param course: The course to enroll the student in.
         :param grade: The student's received grade in the course.
         """
-        pass
+
+        if course not in self.courses.keys():
+            self.courses[course] = grade
+
+        course.add_student(self, grade)
 
     def update_grade(self, course: Course, grade: Grade) -> None:
         """
@@ -118,7 +142,8 @@ class Student:
         :param grade: The new grade to assign to the student for this course.
         """
 
-        pass
+        if course in self.courses.keys():
+            self.courses[course] = grade
 
     def calculate_gpa(self) -> float:
         """
@@ -137,19 +162,24 @@ class Student:
             return 0
 
         raw_gpa = (grade_points * credits) / credits
-        return misc_tools.truncate_float(raw_gpa, 2)
+
+        return round(raw_gpa, 2)
 
 
     def get_courses(self) -> list[Course]:
         """
         Get a list of all courses this student is taking.
         """
-        pass
+
+        return list(self.courses.keys())
 
     def get_course_info(self) -> str:
         """
         Generate a summary of this student's enrollments, including course code, grade, and credits.
-        :return:
         """
-        pass
 
+        output_string = f"Enrolled courses for {self.name}. (ID: {self.student_id})\n"
+        for course, grade in sorted(self.courses.items()):
+            output_string += f"Course: {course.course_code}, Credits: {course.credits}, Grade: {grade}\n"
+
+        return output_string
