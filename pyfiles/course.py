@@ -76,6 +76,5 @@ class Course:
             )
         )
 
-    def get_mode_grade(self) -> str:
-        grades = self.__enumerate_student_grades_as_floats()
+
 

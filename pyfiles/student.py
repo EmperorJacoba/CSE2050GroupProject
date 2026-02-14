@@ -72,6 +72,9 @@ class Grade:
     def __str__(self):
         return self.grade
 
+    def __eq__(self, other):
+        return other.grade == self.grade
+
 
 def validate_student_id(student_id: str) -> bool:
 
@@ -80,7 +83,7 @@ def validate_student_id(student_id: str) -> bool:
     if len(student_id) != 8:
         err_string += f"Student ID {student_id} is invalid. ID string must be eight characters\n"
 
-    if student_id[0:2] != "STU":
+    if student_id[0:3] != "STU":
         err_string += f"Student ID {student_id} is invalid. ID string must start with \"STU\".\n"
 
     if err_string != "":
@@ -159,7 +162,7 @@ class Student:
         grade_points = 0
         credits = 0
 
-        for (key, value) in self.courses:
+        for (key, value) in self.courses.items():
             credits += key.credits
             grade_points += value.get_grade_point()
 
