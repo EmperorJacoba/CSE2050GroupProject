@@ -75,3 +75,10 @@ class Course:
                 sum(grades) / len(grades) # this is the average
             )
         )
+
+    def get_student_intersect(self, other_course):
+        intersecting_students = []
+        for student in self.students:
+            if student in other_course.students:
+                intersecting_students.append(student.student_id)
+        return intersecting_students
