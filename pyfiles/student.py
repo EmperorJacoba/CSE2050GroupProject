@@ -1,6 +1,3 @@
-from course import Course
-import misc_tools
-
 class Grade:
     """
     A representation of a letter grade. Can be instantiated as a letter grade, integer grade, or decimal grade
@@ -51,12 +48,14 @@ class Grade:
                       f"or valid letter grade as given in the README.")
 
         elif isinstance(grade_id, float) or isinstance(grade_id, int):
-            grade_id = misc_tools.truncate_float(grade_id, 2) # 2 decimals to conform to the NUMBER_TO_GRADE_ID dict
+            grade_id = round(grade_id, 2) # 2 decimals to conform to the NUMBER_TO_GRADE_ID dict
 
-            # Adapted from: https://stackoverflow.com/questions/6053974/efficiently-check-in-which-of-many-ranges-an-integer-is
-            grade_match = [low <= grade_id <= high for (low, high) in Grade.NUMBER_TO_GRADE_ID.keys()]
+            grade_match = ""
+            for (range, value) in Grade.NUMBER_TO_GRADE_ID.items():
+                if range[0] <= grade_id <= range[1]:
+                    grade_match = value
 
-            if not any(grade_match):
+            if not grade_match:
                 self.grade = 'F'
 
                 print(f"Invalid grade number assignment was attempted. "
@@ -65,7 +64,7 @@ class Grade:
                       f"Please retry the operation with a valid decimal number from 0-100 "
                       f"or valid letter grade as given in the README.")
             else:
-                self.grade = Grade.NUMBER_TO_GRADE_ID[grade_match[0]]
+                self.grade = grade_match
 
     def get_grade_point(self) -> float:
         return Grade.GRADE_POINTS[self.grade]
@@ -101,7 +100,7 @@ class Student:
         Value: The letter grade of the student. (e.g. "A", "B+").
     """
 
-    def __init__(self, student_id: str, name: str, courses: dict[Course, Grade]):
+    def __init__(self, student_id: str, name: str, courses: dict):
         """
         Create a new student with its related information.
         :param student_id: Student's unique identifier.
@@ -123,19 +122,22 @@ class Student:
     # Use a grade class (setup below) to store and validate grades from string
     # Allows easy storage, calculation, conversion of grades. Convert from string formatted like "A+" or float like 98.0
     # Overloads for these!
-    def enroll(self, course: Course, grade: Grade) -> None:
+    def enroll(self, course, grade: Grade) -> None:
         """
         Enroll a student in a given course with a specified grade. Updates the corresponding course to match.
-        :param course: The course to enroll the student in.
-        :param grade: The student's received grade in the course.
+        :param course: The course object to enroll the student in.
+        :param grade: The student's received grade in the course, as a Grade object.
         """
+
+        if isinstance(grade, str):
+            grade = Grade(grade)
 
         if course not in self.courses.keys():
             self.courses[course] = grade
 
         course.add_student(self, grade)
 
-    def update_grade(self, course: Course, grade: Grade) -> None:
+    def update_grade(self, course, grade: Grade) -> None:
         """
         Modify the student's grade in a given course. No action taken if the student is not enrolled in the given Course.
         :param course: The specified course.
@@ -144,6 +146,9 @@ class Student:
 
         if course in self.courses.keys():
             self.courses[course] = grade
+
+    def get_course_grade(self, course) -> float:
+        return self.courses[course]
 
     def calculate_gpa(self) -> float:
         """
@@ -165,8 +170,10 @@ class Student:
 
         return round(raw_gpa, 2)
 
+    def print_gpa(self) -> None:
+        print(self.calculate_gpa())
 
-    def get_courses(self) -> list[Course]:
+    def get_courses(self) -> list:
         """
         Get a list of all courses this student is taking.
         """
@@ -182,4 +189,5 @@ class Student:
         for course, grade in sorted(self.courses.items()):
             output_string += f"Course: {course.course_code}, Credits: {course.credits}, Grade: {grade}\n"
 
+        output_string += f"\nStudent's GPA: {self.calculate_gpa()}"
         return output_string
