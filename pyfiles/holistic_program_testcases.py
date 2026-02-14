@@ -36,8 +36,9 @@ class TestCourse(unittest.TestCase):
         random_num = random.randint(10, 99)
         for i in range(random_num):
             stu = Student(f"STU{random_num}000", f"Student{random_num}", {})
-            course1.add_student(stu, Grade(85))
-            self.assertEqual(stu.courses, {course1: Grade(85)})
+            grade_int = random.randrange(1, 100)
+            course1.add_student(stu, Grade(grade_int))
+            self.assertEqual(stu.courses, {course1: Grade(grade_int)})
 
         self.assertEqual(course1.get_student_count(), random_num)
 
@@ -62,12 +63,16 @@ class TestStudent(unittest.TestCase):
 
     def test_calculate_gpa(self):
         course1 = Course("MATH 1132Q", 4, [])
+        course2 = Course("PYSC 1000", 4, [])
         student1 = Student("STU94146", "Alex", {})
 
         self.assertEqual(student1.calculate_gpa(), 0)
 
         student1.enroll(course1, Grade("A"))
-        self.assertEqual(student1.calculate_gpa(), 4)
+        student1.enroll(course2, Grade("B+"))
+        expected_gpa = (8 * (4.0 + 3.3)) / 8 # expected equation outcome from GPA formula
+
+        self.assertEqual(student1.calculate_gpa(), expected_gpa)
 
     def test_get_course_info(self):
         course1 = Course("MATH 1132Q", 4, [])
