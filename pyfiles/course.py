@@ -1,4 +1,3 @@
-import math
 from student import Student, Grade
 
 class Course:
@@ -37,44 +36,6 @@ class Course:
     def get_student_count(self) -> int:
         """Get the number of students currently enrolled in this course."""
         return len(self.students)
-
-    def __enumerate_student_grades_as_floats(self) -> list[float]:
-        grades = []
-        for student in self.students:
-            grades.append(student.get_course_grade(self))
-
-        grades.sort()
-
-        return grades
-
-    # test med, avg, mode
-    def get_median_grade(self) -> str:
-        grades = self.__enumerate_student_grades_as_floats()
-
-        grades_len = len(grades)
-
-        if grades_len == 0:
-            return None
-
-        max_index = grades_len - 1
-        if grades_len % 2 == 0:
-            mid_high = grades[math.ceil(max_index / 2)]
-            mid_low = grades[math.floor(max_index / 2)]
-
-            numerical_grade = (mid_high + mid_low) / 2
-        else:
-            numerical_grade = grades[int(max_index / 2)]
-
-        # Use Grade to parse the numerical grade, then stringify it
-        return str(Grade(numerical_grade))
-
-    def get_mean_grade(self) -> str:
-        grades = self.__enumerate_student_grades_as_floats()
-        return str( # Use Grade to parse the numerical average, then stringify it
-            Grade(
-                sum(grades) / len(grades) # this is the average
-            )
-        )
 
     def get_student_intersect(self, other_course):
         intersecting_students = []
