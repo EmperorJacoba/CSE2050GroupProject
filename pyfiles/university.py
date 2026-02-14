@@ -1,5 +1,5 @@
-from pyfiles.course import Course
-from pyfiles.student import Student
+from course import Course
+from student import Student
 
 class University:
     """
