@@ -1,6 +1,3 @@
-from course import Course
-import misc_tools
-
 class Grade:
     """
     A representation of a letter grade. Can be instantiated as a letter grade, integer grade, or decimal grade
@@ -51,7 +48,7 @@ class Grade:
                       f"or valid letter grade as given in the README.")
 
         elif isinstance(grade_id, float) or isinstance(grade_id, int):
-            grade_id = misc_tools.truncate_float(grade_id, 2) # 2 decimals to conform to the NUMBER_TO_GRADE_ID dict
+            grade_id = round(grade_id, 2) # 2 decimals to conform to the NUMBER_TO_GRADE_ID dict
 
             # Adapted from: https://stackoverflow.com/questions/6053974/efficiently-check-in-which-of-many-ranges-an-integer-is
             grade_match = [low <= grade_id <= high for (low, high) in Grade.NUMBER_TO_GRADE_ID.keys()]
@@ -73,6 +70,9 @@ class Grade:
     def __str__(self):
         return self.grade
 
+    def __eq__(self, other):
+        return other.grade == self.grade
+
 
 def validate_student_id(student_id: str) -> bool:
 
@@ -81,7 +81,7 @@ def validate_student_id(student_id: str) -> bool:
     if len(student_id) != 8:
         err_string += f"Student ID {student_id} is invalid. ID string must be eight characters\n"
 
-    if student_id[0:2] != "STU":
+    if student_id[0:3] != "STU":
         err_string += f"Student ID {student_id} is invalid. ID string must start with \"STU\".\n"
 
     if err_string != "":
@@ -101,7 +101,7 @@ class Student:
         Value: The letter grade of the student. (e.g. "A", "B+").
     """
 
-    def __init__(self, student_id: str, name: str, courses: dict[Course, Grade]):
+    def __init__(self, student_id: str, name: str, courses: dict):
         """
         Create a new student with its related information.
         :param student_id: Student's unique identifier.
@@ -123,7 +123,7 @@ class Student:
     # Use a grade class (setup below) to store and validate grades from string
     # Allows easy storage, calculation, conversion of grades. Convert from string formatted like "A+" or float like 98.0
     # Overloads for these!
-    def enroll(self, course: Course, grade: Grade) -> None:
+    def enroll(self, course, grade: Grade) -> None:
         """
         Enroll a student in a given course with a specified grade. Updates the corresponding course to match.
         :param course: The course to enroll the student in.
@@ -135,7 +135,7 @@ class Student:
 
         course.add_student(self, grade)
 
-    def update_grade(self, course: Course, grade: Grade) -> None:
+    def update_grade(self, course, grade: Grade) -> None:
         """
         Modify the student's grade in a given course. No action taken if the student is not enrolled in the given Course.
         :param course: The specified course.
@@ -154,7 +154,7 @@ class Student:
         grade_points = 0
         credits = 0
 
-        for (key, value) in self.courses:
+        for (key, value) in self.courses.items():
             credits += key.credits
             grade_points += value.get_grade_point()
 
@@ -166,7 +166,7 @@ class Student:
         return round(raw_gpa, 2)
 
 
-    def get_courses(self) -> list[Course]:
+    def get_courses(self) -> list:
         """
         Get a list of all courses this student is taking.
         """

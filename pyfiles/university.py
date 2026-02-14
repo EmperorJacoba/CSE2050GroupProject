@@ -1,5 +1,5 @@
-from course import Course
-from student import Student
+from pyfiles.course import Course
+from pyfiles.student import Student
 
 class University:
     """
@@ -58,7 +58,8 @@ class University:
         if student_id in self.students:
             return self.students[student_id]
         else:
-            raise KeyError(f"Student with id {student_id} not registered at this university.")
+            return None
+            # raise KeyError(f"Student with id {student_id} not registered at this university.")
 
     def get_course(self, course_code: str) -> Course:
         """

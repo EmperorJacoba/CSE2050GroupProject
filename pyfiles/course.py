@@ -1,4 +1,4 @@
-from student import Student, Grade
+from pyfiles.student import Student, Grade
 
 class Course:
     """
