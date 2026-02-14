@@ -1,8 +1,8 @@
 import random
 import unittest
-from pyfiles.student import Student, Grade
-from pyfiles.course import Course
-from pyfiles.university import University
+from student import Student, Grade
+from course import Course
+from university import University
 
 
 class TestCourse(unittest.TestCase):

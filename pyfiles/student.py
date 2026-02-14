@@ -179,7 +179,7 @@ class Student:
         """
 
         output_string = f"Enrolled courses for {self.name}. (ID: {self.student_id})\n"
-        for course, grade in sorted(self.courses.items()):
+        for course, grade in self.courses.items():
             output_string += f"Course: {course.course_code}, Credits: {course.credits}, Grade: {grade}\n"
 
         return output_string
