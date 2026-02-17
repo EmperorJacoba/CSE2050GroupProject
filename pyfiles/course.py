@@ -37,7 +37,13 @@ class Course:
         """Get the number of students currently enrolled in this course."""
         return len(self.students)
 
-    def get_student_intersect(self, other_course):
+    def get_student_intersect(self, other_course: Course) -> list[Student]:
+        """
+        Return the intersecting students between courses
+        :param other_course: Another course object to compare with.
+        :return: A list of all students that are in both courses.
+        """
+
         intersecting_students = []
         for student in self.students:
             if student in other_course.students:
