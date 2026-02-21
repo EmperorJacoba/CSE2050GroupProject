@@ -96,3 +96,32 @@ class University:
             return []
 
         return found_course.students
+
+    def get_mean_gpa(self) -> float:
+        """
+        Get the mean gpa of the university
+        :return: Returns a float of the mean gpa.
+        """
+        if len(self.students) == 0:
+            return 0
+
+        gpa_sum = 0
+
+        for student in self.students.values():
+            gpa_sum+= student.calculate_gpa()
+
+        return gpa_sum/len(self.students)
+
+    def get_median_gpa(self) -> float:
+        """
+        Get the median gpa of the university.
+        :return:  float of the median gpa.
+        """
+        if len(self.students) == 0:
+            return 0
+        gpas = []
+        for student in self.students.values():
+            gpas.append(student.calculate_gpa())
+
+        gpas.sort()
+        return float(gpas[len(gpas)//2])
