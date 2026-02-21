@@ -9,7 +9,6 @@
 - University.get_median_gpa()
 
 - README file explaining how to run program and tests
-- Rename main.py to csv_parser.py
 
 
 - comment/docstring for course
