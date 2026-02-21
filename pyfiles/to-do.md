@@ -1,13 +1,5 @@
 # To Do
 
-- Course.get_mean_grade()
-- Course.get_mode_grade()
-- Course.get_median_grade()
-
-
-- University.get_mean_gpa()
-- University.get_median_gpa()
-
 - README file explaining how to run program and tests
 
 
@@ -20,13 +12,10 @@
 
 ## Tests:
 
-- get mean, median, mode of a course
-- get mean and median gpa of a university
 - get intersection of students in a course
 
 
 - test invalid id for student
-- test invalid id for course
 - test empty name for student/course
 
 
