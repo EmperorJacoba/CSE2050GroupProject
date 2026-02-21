@@ -131,4 +131,9 @@ class University:
             gpas.append(student.calculate_gpa())
 
         gpas.sort()
-        return float(gpas[len(gpas)//2])
+        if len(gpas) % 2 == 0:
+            gpa1 = gpas[len(gpas) // 2]
+            gpa2 = gpas[(len(gpas) // 2) - 1]
+            return (gpa1+gpa2)/2
+        else:
+            return gpas[len(gpas) // 2]
