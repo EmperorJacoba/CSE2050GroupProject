@@ -12,10 +12,10 @@ def make_dummy_course(grade_list: list[Grade]) -> Course:
     student3 = Student("STU94122", "Justin3")
     student4 = Student("STU94322", "Justin4")
 
-    student1.enroll(course, Grade(grade_list[0]))
-    student2.enroll(course, Grade(grade_list[1]))
-    student3.enroll(course, Grade(grade_list[2]))
-    student4.enroll(course, Grade(grade_list[3]))
+    student1.enroll(course, grade_list[0])
+    student2.enroll(course, grade_list[1])
+    student3.enroll(course, grade_list[2])
+    student4.enroll(course, grade_list[3])
 
     return course
 

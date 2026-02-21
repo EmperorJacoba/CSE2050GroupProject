@@ -65,6 +65,9 @@ class Grade:
                       f"or valid letter grade as given in the README.")
             else:
                 self.grade = grade_match
+        else:
+            print(f"Failed: {grade_id}, {type(grade_id)}")
+
 
     def get_grade_point(self) -> float:
         return Grade.GRADE_POINTS[self.grade]

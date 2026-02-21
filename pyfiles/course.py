@@ -21,7 +21,7 @@ class Course:
         if students is not None:
             self.students = students
         else:
-            self.students = {}
+            self.students = []
 
     def add_student(self, student: Student, grade: Grade = Grade("F")) -> None:
         """
@@ -75,10 +75,10 @@ class Course:
         grade_list.sort()
 
         length = len(grade_list)
-        middle_index = length - 1 // 2
+        middle_index = (length - 1) // 2
 
         if len(grade_list) % 2 == 0:
-            return grade_list[middle_index] + grade_list[middle_index + 1] / 2
+            return (grade_list[middle_index] + grade_list[middle_index + 1]) / 2
         else:
             return grade_list[middle_index]
 
