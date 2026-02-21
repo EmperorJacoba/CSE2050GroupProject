@@ -75,6 +75,9 @@ class Grade:
     def __eq__(self, other):
         return other.grade == self.grade
 
+    def __float__(self):
+        return Grade.GRADE_POINTS[self.grade]
+
 
 def validate_student_id(student_id: str) -> bool:
 
@@ -103,7 +106,7 @@ class Student:
         Value: The letter grade of the student. (e.g. "A", "B+").
     """
 
-    def __init__(self, student_id: str, name: str, courses: dict):
+    def __init__(self, student_id: str, name: str, courses: dict = None):
         """
         Create a new student with its related information.
         :param student_id: Student's unique identifier.
@@ -120,7 +123,11 @@ class Student:
             raise ValueError("Student name must not be empty.")
 
         self.name = name
-        self.courses = courses
+
+        if courses is not None:
+            self.courses = courses
+        else:
+            self.courses = {}
 
     # Use a grade class (setup below) to store and validate grades from string
     # Allows easy storage, calculation, conversion of grades. Convert from string formatted like "A+" or float like 98.0
@@ -150,8 +157,11 @@ class Student:
         if course in self.courses.keys():
             self.courses[course] = grade
 
-    def get_course_grade(self, course) -> float:
+    def get_course_grade_str(self, course) -> str:
         return self.courses[course]
+
+    def get_course_grade_float(self, course) -> float:
+        return float(self.courses[course])
 
     def calculate_gpa(self) -> float:
         """

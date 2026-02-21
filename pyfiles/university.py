@@ -9,14 +9,21 @@ class University:
     courses: A map of course codes to Course objects.
     """
 
-    def __init__(self, students: dict[str, Student], courses: dict[str, Course]):
+    def __init__(self, students: dict[str, Student] = None, courses: dict[str, Course] = None):
         """
         Create a new university, with a student and course directory.
         :param students: Dictionary of students enrolled in this University. Key = Student ID. Value = Student object.
         :param courses: Dictionary of courses this University offers. Key = Course Code/ID. Value = Course object.
         """
-        self.students = students
-        self.courses = courses
+        if students is not None:
+            self.students = students
+        else:
+            self.students = {}
+
+        if courses is not None:
+            self.courses = courses
+        else:
+            self.courses = {}
 
     def add_course(self, course_code: str, credits: int) -> Course:
         """
