@@ -8,40 +8,38 @@ from student import Grade
 from university import University
 import csv
 
-university1 = University({},{})
-
 #Reads course info from course_catalog.csv and adds courses with credits to university object
-with open("csv/course_catalog.csv", "r", newline='') as csvfile:
-    csvreader = csv.DictReader(csvfile)
-    for row in csvreader:
-        course_code = row["course_code"]
-        course_credits = int(row["credits"])
-        university1.add_course(course_code,course_credits)
+def read_course_data(uni: University, path: str) -> None:
+    """Read data from csv file of university course information and adds courses with credits to the given university object.
+        :param uni: University object.
+        :param path: A string with the path to the chosen csv file containing course data."""
+    with open(path, "r", newline='') as csvfile:
+        csvreader = csv.DictReader(csvfile)
+        for row in csvreader:
+            course_code = row["course_code"]
+            course_credits = int(row["credits"])
+            uni.add_course(course_code,course_credits)
 
-#Reads students information from university_data.csv and enrolls students into university object
-with open("csv/university_data.csv", "r", newline='') as csvfile:
-    csvreader = csv.DictReader(csvfile)
-    for row in csvreader:
-        student_id = row["student_id"]
-        student_name = row["name"]
-        university1.add_student(student_id, student_name)
+def read_uni_data(uni: University, path: str) -> None:
+    """Read data from csv file of university student information and enroll students into courses with the corresponding grades.
+        :param uni: University object.
+        :param path: A string with the path to the chosen csv file containing student data."""
 
-#Reads student info from university_data.csv and enrolls students into courses with corresponding grades
-with open("csv/university_data.csv", "r", newline='') as csvfile:
-    csvreader = csv.DictReader(csvfile)
-    for row in csvreader:
-        student_id = row["student_id"]
-        student_name = row["name"]
-        courses = row["courses"].split(';')
-        grades = {}
+    with open(path, "r", newline='') as csvfile:
+        csvreader = csv.DictReader(csvfile)
+        for row in csvreader:
+            student_id = row["student_id"]
+            student_name = row["name"]
+            courses = row["courses"].split(';')
+            grades = {}
 
-        student = university1.add_student(student_id, student_name)
+            student = uni.add_student(student_id, student_name)
 
-        #Create dict with course and grades
-        for course in courses:
-            course_detail = course.split(":")
-            grades[course_detail[0]] = course_detail[1]
+            #Create dict with course and grades
+            for course in courses:
+                course_detail = course.split(":")
+                grades[course_detail[0]] = course_detail[1]
 
-        #Enroll students into course with grade from dict
-        for course in grades:
-            student.enroll(university1.get_course(course), Grade(grades[course]))
+            #Enroll students into course with grade from dict
+            for course in grades:
+                student.enroll(uni.get_course(course), Grade(grades[course]))
