@@ -15,6 +15,9 @@ class Course:
         :param credits: number of credits earned for completing the course.
         :param students: list of all students enrolled in this course.
         """
+        if not course_code:
+            raise ValueError("Course code must not be empty.")
+
         self.course_code = course_code
         self.credits = credits
 
