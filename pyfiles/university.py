@@ -136,3 +136,16 @@ class University:
             return (gpa1+gpa2)/2
         else:
             return gpas[len(gpas) // 2]
+
+    def print_students_in_course(self, course_code: str) -> None:
+        """
+        Prints out all students names in the given course.
+        :param course_code: The course code of the Course object being queried.
+
+        Created by Justin Elak
+        """
+        if course_code in self.courses.keys():
+            for student in self.courses[course_code].students:
+                print(student.key().name)
+        else:
+            raise IndexError("Given course is not in the course dict.")
