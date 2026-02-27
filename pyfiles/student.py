@@ -96,6 +96,9 @@ def validate_student_id(student_id: str) -> bool:
 
     return True
 
+# Note for course variables: there is no course type hinting for Course objects because course references student in some
+# of its functions. Importing Course.py for use with type hinting results in a circular import error. Every time the name of
+# a variable is "course", assume that it is a Course object. 
 class Student:
     """
     A representation of a given student at a University.\n
