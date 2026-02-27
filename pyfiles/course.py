@@ -14,6 +14,8 @@ class Course:
         :param course_code: the unique ID of the course (e.g. "CSE 1010", "UNIV 1784").
         :param credits: number of credits earned for completing the course.
         :param students: list of all students enrolled in this course.
+
+        Created by Jacob Russell
         """
         if not course_code:
             raise ValueError("Course code must not be empty.")
@@ -32,6 +34,8 @@ class Course:
         :param student: The student to add to the course.
         :param grade: A grade object representing the grade of the student in the course (if known). "F" (0.0 grade points) by default.
         If the student is already present in the roster, updates the grade of the student.
+
+        Created by Jacob Russell
         """
 
         if student not in self.students:
@@ -49,6 +53,8 @@ class Course:
         Return the intersecting students between courses
         :param other_course: Another course object to compare with.
         :return: A list of all students that are in both courses.
+
+        Created by Justin Elak
         """
 
         intersecting_students = []
@@ -58,10 +64,17 @@ class Course:
         return intersecting_students
 
     def get_mode_grade_point(self) -> float:
+        """
+        Calculate the mode grade point (conversion from letter to GPA grade point) in a course.
+        For reference, mode is the most common element in a sequence.
+        :return: The mode grade point among the student roster's grades.
+
+        Created by Justin Elak
+        """
         count_dictionary = {}
 
-        for i in self.students:
-            grade = i.get_course_grade_float(self)
+        for student in self.students:
+            grade = student.get_course_grade_float(self)
             if grade in count_dictionary:
                 count_dictionary[grade] = count_dictionary[grade] + 1
             else:
@@ -70,6 +83,14 @@ class Course:
         return max(count_dictionary, key=count_dictionary.get)
 
     def get_median_grade_point(self) -> float:
+        """
+        Get the median grade point (conversion from letter to GPA grade point) in a course.
+        For reference, median is the center value in a sorted list of values. If length is even, the median is the two
+        middle elements divided by two.
+        :return: The median grade point of the student roster's grades.
+
+        Created by Jacob Russell
+        """
         grade_list = [student.get_course_grade_float(self) for student in self.students]
 
         if not grade_list:
@@ -86,6 +107,13 @@ class Course:
             return grade_list[middle_index]
 
     def get_mean_grade_point(self) -> float:
+        """
+        Get the mean grade point (conversion from letter to GPA grade point) in a course.
+        For reference, mean is the average value of numerical values in a list. A.K.A. sum(list) / length(list)
+        :return: The mean/average grade point of the student roster grades.
+
+        Created by Jacob Russell
+        """
         grade_list = [student.get_course_grade_float(self) for student in self.students]
 
         if not grade_list:

@@ -4,6 +4,7 @@ class Grade:
     and can be converted to a grade point easily with get_grade_point().
     """
 
+    # Map of letter grade string to grade points
     GRADE_POINTS = {
         'A': 4.0,
         'A-': 3.7,
@@ -17,6 +18,7 @@ class Grade:
         'F': 0.0
     }
 
+    # Map of grade percentages to letter grades to hundredth-place precision
     NUMBER_TO_GRADE_ID = {
         (0.00, 59.99): 'F',
         (60.00, 69.99): 'D',
@@ -34,6 +36,8 @@ class Grade:
         """
         Instantiate a new grade from a letter grade (formatted as "A", "B", etc) or from a number (ex. 80.67, 90)
         Assigns a default grade of 'F' if given value is invalid.
+
+        Created by Jacob Russell
         """
 
         if isinstance(grade_id, str):
@@ -69,28 +73,58 @@ class Grade:
             raise TypeError(f"Invalid grade_id type {type(grade_id)}. Grade must be inputted as string, int, or float.")
 
     def get_grade_point(self) -> float:
+        """
+        Convert the grade stored in a grade object to a GPA grade point.
+
+        Created by Jacob Russell
+        """
         return Grade.GRADE_POINTS[self.grade]
 
     def __str__(self):
+        """
+        Return letter grade representation of the grade.
+
+        Created by Jacob Russell
+        """
         return self.grade
 
     def __eq__(self, other):
+        """
+        Compares two grades based on the stored letter grade string.
+
+        Created by Jacob Russell
+        """
         return other.grade == self.grade
 
     def __float__(self):
+        """
+        Return the grade point representation of the stored grade data.
+
+        Created by Jacob Russell
+        """
         return Grade.GRADE_POINTS[self.grade]
 
 
 def validate_student_id(student_id: str) -> bool:
+    """
+    Determine if a given student ID is valid. Raises an error if it is not valid, returns True otherwise.
+    :param student_id: The given string meant to represent a student ID.
+    :return: True if the ID is valid.
+
+    Created by Jacob Russell
+    """
 
     err_string = ""
 
+    # ID is eight characters
     if len(student_id) != 8:
         err_string += f"Student ID {student_id} is invalid. ID string must be eight characters\n"
 
+    # First three chars must be "STU".
     if student_id[0:3] != "STU":
         err_string += f"Student ID {student_id} is invalid. ID string must start with \"STU\".\n"
 
+    # Alert user of errors determined in string ID (can be one or both)
     if err_string != "":
         raise ValueError(err_string)
 
@@ -98,7 +132,7 @@ def validate_student_id(student_id: str) -> bool:
 
 # Note for course variables: there is no course type hinting for Course objects because course references student in some
 # of its functions. Importing Course.py for use with type hinting results in a circular import error. Every time the name of
-# a variable is "course", assume that it is a Course object. 
+# a variable is "course", assume that it is a Course object.
 class Student:
     """
     A representation of a given student at a University.\n
@@ -108,7 +142,7 @@ class Student:
     name: The name of the student.\n
     courses: Dictionary of all courses the student has taken/is taking.
         Key: the course at hand (as a Course object).
-        Value: The letter grade of the student. (e.g. "A", "B+").
+        Value: The letter grade (e.g. "A", "B+") of the student as a Grade object.
     """
 
     def __init__(self, student_id: str, name: str, courses: dict = None):
@@ -118,7 +152,9 @@ class Student:
         :param name: Student's name.
         :param courses: Dictionary of all courses the student has taken/is taking.
                         Key: the course at hand (as a Course object).
-                        Value: The letter grade of the student. (e.g. "A", "B+").
+                        Value: The Grade object representing the grade of the student for that course.
+
+        Created by Jacob Russell
         """
 
         if validate_student_id(student_id):
@@ -142,6 +178,8 @@ class Student:
         Enroll a student in a given course with a specified grade. Updates the corresponding course to match.
         :param course: The course object to enroll the student in.
         :param grade: The student's received grade in the course, as a Grade object.
+
+        Created by Jacob Russell
         """
 
         if isinstance(grade, str):
@@ -156,22 +194,40 @@ class Student:
         """
         Modify the student's grade in a given course. No action taken if the student is not enrolled in the given Course.
         :param course: The specified course.
-        :param grade: The new grade to assign to the student for this course.
+        :param grade: The new grade to assign to the student for this course, as a Grade object.
+
+        Created by Jacob Russell
         """
 
         if course in self.courses.keys():
             self.courses[course] = grade
 
     def get_course_grade_str(self, course) -> str:
-        return self.courses[course]
+        """
+        Get a string grade representation of the student's grade in a course. e.g. "A", "B+"
+        :param course: The course object to query the grade for.
+        :return: The string representation of the grade for the queried course.
+
+        Created by Jacob Russell
+        """
+        return str(self.courses[course])
 
     def get_course_grade_float(self, course) -> float:
+        """
+        Get a GPA grade point representation of the student's grade in a course. e.g. 3.7, 2.0
+        :param course: The course object to query the grade for.
+        :return: The float (grade point) representation of the grade for the queried course.
+
+        Creted by Jacob Russell
+        """
         return float(self.courses[course])
 
     def calculate_gpa(self) -> float:
         """
         Calculate the grade-point average of the student.
         :return: GPA, as a floating point number to two degrees of precision.
+
+        Created by Jacob Russell
         """
 
         grade_points = 0
@@ -189,18 +245,28 @@ class Student:
         return round(raw_gpa, 2)
 
     def print_gpa(self) -> None:
+        """
+        Print the gpa of the student.
+
+        Created by Jacob Russell
+        """
         print(self.calculate_gpa())
 
     def get_courses(self) -> list:
         """
         Get a list of all courses this student is taking.
+
+        Created by Jacob Russell
         """
 
         return list(self.courses.keys())
 
     def get_course_info(self) -> str:
         """
-        Generate a summary of this student's enrollments, including course code, grade, and credits.
+        Generate a summary of this student's enrollments, including course code, grade, and credits. Returns the summary
+        as a string.
+
+        Created by Jacob Russell
         """
 
         output_string = f"Enrolled courses for {self.name}. (ID: {self.student_id})\n"
