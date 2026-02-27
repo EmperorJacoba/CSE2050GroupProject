@@ -56,7 +56,7 @@ class University:
 
         return new_student
 
-    def get_student(self, student_id: str) -> Student:
+    def get_student(self, student_id: str) -> Student | None:
         """
         Get a student by ID, formatted as STUXXXXX.
         :param student_id: The ID of the student object being requested.
@@ -66,16 +66,15 @@ class University:
             return self.students[student_id]
         else:
             return None
-            # raise KeyError(f"Student with id {student_id} not registered at this university.")
 
-    def get_course(self, course_code: str) -> Course:
+    def get_course(self, course_code: str) -> Course | None:
         """
         Get the corresponding Course object for a given code.
         :param course_code: The course code of the Course object being requested.
         :return: The Course object with the specified code. Returns None if not found.
         """
 
-        return self.courses.get(course_code)
+        return self.courses.get(course_code, None)
 
     def get_course_enrollment(self, course_code: str) -> int:
         """

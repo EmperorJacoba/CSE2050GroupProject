@@ -44,11 +44,11 @@ class Grade:
                 print(f"Invalid grade letter assignment was attempted. "
                       f"Invalid grade letter attempt: '{grade_id}' "
                       f"Grade assigned instead was '{self.grade}'.\n"
-                      f"Please retry the operation with a valid decimal number from 0-100 "
+                      f"Please retry the operation with a valid integer or decimal number from 0-100 "
                       f"or valid letter grade as given in the README.")
 
         elif isinstance(grade_id, float) or isinstance(grade_id, int):
-            grade_id = round(grade_id, 2) # 2 decimals to conform to the NUMBER_TO_GRADE_ID dict
+            grade_id = round(grade_id, 2) # 2 decimals to conform to the NUMBER_TO_GRADE_ID dict precision
 
             grade_match = ""
             for (range, value) in Grade.NUMBER_TO_GRADE_ID.items():
@@ -66,8 +66,7 @@ class Grade:
             else:
                 self.grade = grade_match
         else:
-            print(f"Failed: {grade_id}, {type(grade_id)}")
-
+            raise TypeError(f"Invalid grade_id type {type(grade_id)}. Grade must be inputted as string, int, or float.")
 
     def get_grade_point(self) -> float:
         return Grade.GRADE_POINTS[self.grade]
@@ -97,6 +96,9 @@ def validate_student_id(student_id: str) -> bool:
 
     return True
 
+# Note for course variables: there is no course type hinting for Course objects because course references student in some
+# of its functions. Importing Course.py for use with type hinting results in a circular import error. Every time the name of
+# a variable is "course", assume that it is a Course object. 
 class Student:
     """
     A representation of a given student at a University.\n
