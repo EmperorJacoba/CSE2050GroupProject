@@ -13,7 +13,9 @@ class University:
         """
         Create a new university, with a student and course directory.
         :param students: Dictionary of students enrolled in this University. Key = Student ID. Value = Student object.
-        :param courses: Dictionary of courses this University offers. Key = Course Code/ID. Value = Course object.
+        :param courses: Dictionary of courses this University offers. Key = Course Code/ID. Value = Course object
+
+        Created by Jacob Russell
         """
         if students is not None:
             self.students = students
@@ -31,6 +33,8 @@ class University:
         :param course_code: The course code of the course being added.
         :param credits: Number of credits given by taking this course.
         :return: The course object created with its corresponding properties
+
+        Created by Jacob Russell
         """
         if course_code in self.courses.keys():
             return self.courses[course_code]
@@ -46,6 +50,8 @@ class University:
         :param student_id: The 8 character ID for this student, formatted as STUXXXXX. Example: "STU12EO5"
         :param name: The name of the student being enrolled in the University.
         :return: The student object created with its corresponding properties.
+
+        Created by Jacob Russell
         """
 
         if student_id in self.students.keys():
@@ -61,6 +67,8 @@ class University:
         Get a student by ID, formatted as STUXXXXX.
         :param student_id: The ID of the student object being requested.
         :return: The student object with the specified ID. Returns None if the student does not exist.
+
+        Created by Jacob Russell
         """
         if student_id in self.students:
             return self.students[student_id]
@@ -72,6 +80,8 @@ class University:
         Get the corresponding Course object for a given code.
         :param course_code: The course code of the Course object being requested.
         :return: The Course object with the specified code. Returns None if not found.
+
+        Created by Jacob Russell
         """
 
         return self.courses.get(course_code, None)
@@ -81,6 +91,8 @@ class University:
         Get the number of students enrolled in a given course.
         :param course_code: The course code of the Course object being queried.
         :return: The number of students enrolled in the specified course.
+
+        Created by Jacob Russell
         """
         found_course = self.get_course(course_code)
 
@@ -94,6 +106,8 @@ class University:
         Get a list of students enrolled in a given course.
         :param course_code: The course code of the Course object being queried.
         :return: A list of all students enrolled in the specified course.
+
+        Created by Jacob Russell
         """
 
         found_course = self.get_course(course_code)
@@ -105,8 +119,10 @@ class University:
 
     def get_mean_gpa(self) -> float:
         """
-        Get the mean gpa of the university
-        :return: Returns a float of the mean gpa.
+        Get the mean gpa of the university's student roster.
+        :return: Mean GPA as a float
+
+        Created by Justin Elak
         """
         if len(self.students) == 0:
             return 0
@@ -114,14 +130,16 @@ class University:
         gpa_sum = 0
 
         for student in self.students.values():
-            gpa_sum+= student.calculate_gpa()
+            gpa_sum += student.calculate_gpa()
 
         return gpa_sum/len(self.students)
 
     def get_median_gpa(self) -> float:
         """
-        Get the median gpa of the university.
-        :return:  float of the median gpa.
+        Get the median gpa of the university's student roster.
+        :return: Median GPA as a float
+
+        Created by Justin Elak
         """
         if len(self.students) == 0:
             return 0

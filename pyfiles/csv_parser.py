@@ -10,9 +10,13 @@ import csv
 
 #Reads course info from course_catalog.csv and adds courses with credits to university object
 def read_course_data(uni: University, path: str) -> None:
-    """Read data from csv file of university course information and adds courses with credits to the given university object.
-        :param uni: University object.
-        :param path: A string with the path to the chosen csv file containing course data."""
+    """
+    Read data from csv file of university course information and adds courses with credits to the given university object.
+    :param uni: University object.
+    :param path: A string with the path to the chosen csv file containing course data.
+
+    Created by Justin Elak
+    """
     with open(path, "r", newline='') as csvfile:
         csvreader = csv.DictReader(csvfile)
         for row in csvreader:
@@ -21,9 +25,13 @@ def read_course_data(uni: University, path: str) -> None:
             uni.add_course(course_code,course_credits)
 
 def read_uni_data(uni: University, path: str) -> None:
-    """Read data from csv file of university student information and enroll students into courses with the corresponding grades.
-        :param uni: University object.
-        :param path: A string with the path to the chosen csv file containing student data."""
+    """
+    Read data from csv file of university student information and enroll students into courses with the corresponding grades.
+    :param uni: University object.
+    :param path: A string with the path to the chosen csv file containing student data.
+
+    Created by Justin Elak
+    """
 
     with open(path, "r", newline='') as csvfile:
         csvreader = csv.DictReader(csvfile)
