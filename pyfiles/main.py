@@ -28,6 +28,7 @@ def prompt_user():
             case _:
                 print("Invalid Input, try again.")
                 print_menu()
+                user_input = input("Select a menu option: ")
 
 course_cat = sys.argv[1]
 student_data = sys.argv[2]
@@ -39,9 +40,11 @@ csv_parser.read_uni_data(university, student_data)
 print(f"Median GPA: {university.get_median_gpa()}")
 print(f"Mean GPA: {university.get_mean_gpa()}")
 
-
-course_code = input("Input a course to show the student list for:")
-university.print_students_in_course(course_code)
-
-student_id = input("Input the student id a student you would like the see the GPA and course info of:")
-print(f"GPA: {university.get_student(student_id).calculate_gpa()}\n{university.get_student(student_id).get_course_info()}")
+user_input = input("Would you like to view more options? [y/n]: ").lower()
+while user_input != "n":
+    match user_input:
+        case "y":
+            prompt_user()
+        case _:
+            print("Invalid Input, try again.")
+            user_input = input("Would you like to view more options? [y/n]: ").lower()
