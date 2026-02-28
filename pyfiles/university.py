@@ -164,6 +164,6 @@ class University:
         """
         if course_code in self.courses.keys():
             for student in self.courses[course_code].students:
-                print(student.key().name)
+                print(student.name)
         else:
             raise IndexError("Given course is not in the course dict.")
