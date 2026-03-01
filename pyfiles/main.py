@@ -97,22 +97,29 @@ def print_course_grade_stats():
             input("Hit enter to exit:")
             return
 
-course_cat = sys.argv[1]
-student_data = sys.argv[2]
+if (len(sys.argv) != 3):
+    raise ValueError(
+        "Incorrect number of command-line arguments passed to script. Please provide two .csv files: a .csv file with "
+        "course data and .csv file with university/student data."
+    )
 
-university = University()
-csv_parser.read_course_data(university, course_cat)
-csv_parser.read_uni_data(university, student_data)
+if __name__ == "__main__":
+    course_cat = sys.argv[1]
+    student_data = sys.argv[2]
 
-print(f"Median GPA: {university.get_median_gpa():.2f}")
-print(f"Mean GPA: {university.get_mean_gpa():.2f}")
+    university = University()
+    csv_parser.read_course_data(university, course_cat)
+    csv_parser.read_uni_data(university, student_data)
 
-user_input = input("Would you like to view more options? [y/n]: ").lower()
-while user_input != "n":
-    match user_input:
-        case "y":
-            prompt_user()
-            break
-        case _:
-            print("Invalid Input, try again.")
-            user_input = input("Would you like to view more options? [y/n]: ").lower()
+    print(f"Median GPA: {university.get_median_gpa():.2f}")
+    print(f"Mean GPA: {university.get_mean_gpa():.2f}")
+
+    user_input = input("Would you like to view more options? [y/n]: ").lower()
+    while user_input != "n":
+        match user_input:
+            case "y":
+                prompt_user()
+                break
+            case _:
+                print("Invalid Input, try again.")
+                user_input = input("Would you like to view more options? [y/n]: ").lower()
