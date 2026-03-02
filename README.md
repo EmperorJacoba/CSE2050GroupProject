@@ -6,4 +6,6 @@ in /pyfiles with two command-line arguments. Argument 1 should be the csv file t
 and argument 2 should be the csv file to parse course data from. The script will prompt for input to specify which data to
 calculate. 
 CSV file format is expected in the same format as outlined in the PDF specifications document. 
+Given CSV files are in pyfiles/csv_files for simplicity when testing python scripts.
+
 To run testcases, run pyfiles/holistic_program_testcases.py.

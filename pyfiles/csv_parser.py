@@ -8,12 +8,12 @@ from student import Grade
 from university import University
 import csv
 
-#Reads course info from course_catalog.csv and adds courses with credits to university object
+#Reads course info from course_catalog.csv_files and adds courses with credits to university object
 def read_course_data(uni: University, path: str) -> None:
     """
-    Read data from csv file of university course information and adds courses with credits to the given university object.
+    Read data from csv_files file of university course information and adds courses with credits to the given university object.
     :param uni: University object.
-    :param path: A string with the path to the chosen csv file containing course data.
+    :param path: A string with the path to the chosen csv_files file containing course data.
 
     Created by Justin Elak
     """
@@ -26,9 +26,9 @@ def read_course_data(uni: University, path: str) -> None:
 
 def read_uni_data(uni: University, path: str) -> None:
     """
-    Read data from csv file of university student information and enroll students into courses with the corresponding grades.
+    Read data from csv_files file of university student information and enroll students into courses with the corresponding grades.
     :param uni: University object.
-    :param path: A string with the path to the chosen csv file containing student data.
+    :param path: A string with the path to the chosen csv_files file containing student data.
 
     Created by Justin Elak
     """

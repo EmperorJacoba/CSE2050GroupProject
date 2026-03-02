@@ -162,7 +162,8 @@ class TestStudent(unittest.TestCase):
 
         student1.enroll(course1, Grade("A"))
         student1.enroll(course2, Grade("B+"))
-        expected_gpa = (8 * (4.0 + 3.3)) / 8 # expected equation outcome from GPA formula
+
+        expected_gpa = (4*4 + 4*3.3) / 8
 
         self.assertEqual(student1.calculate_gpa(), expected_gpa)
 

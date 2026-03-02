@@ -44,8 +44,10 @@ def prompt_user():
 
             case "q":
                 pass
+
             case _:
                 print("Invalid Input, try again.")
+
 def get_students_in_course():
     """
     Prints all the names of the students in the course given by the user.
@@ -131,13 +133,13 @@ def print_course_grade_stats():
             input("Hit enter to exit:")
             return
 
-if (len(sys.argv) != 3):
-    raise ValueError(
-        "Incorrect number of command-line arguments passed to script. Please provide two .csv files: a .csv file with "
-        "course data and .csv file with university/student data."
-    )
-
 if __name__ == "__main__":
+
+    if len(sys.argv) != 3:
+        raise ValueError(
+            "Incorrect number of command-line arguments passed to script. Please provide two .csv_files files: a .csv_files file with "
+            "course data and .csv_files file with university/student data."
+        )
     course_cat = sys.argv[1]
     student_data = sys.argv[2]
 
