@@ -3,6 +3,11 @@ import csv_parser
 from university import University
 
 def print_menu():
+    """
+    Prints out a menu of university data options.
+
+    Created by Justin Elak
+    """
     print("\n[Options]")
     print("a: Get list of students in course")
     print("b: Get student GPA")
@@ -12,6 +17,11 @@ def print_menu():
     print("q: Quit")
 
 def prompt_user():
+    """
+    Displays a menu of options as well as giving the user the ability to select one of the options.
+
+    Created By Justin Elak
+    """
     menu_input = None
     while menu_input != "q":
         print_menu()
@@ -37,6 +47,11 @@ def prompt_user():
             case _:
                 print("Invalid Input, try again.")
 def get_students_in_course():
+    """
+    Prints all the names of the students in the course given by the user.
+
+    Created By Justin Elak
+    """
     while True:
         user_course = input("Course Code:")
         if not university.get_course(user_course):
@@ -48,6 +63,11 @@ def get_students_in_course():
             return
 
 def get_student_gpa():
+    """
+    Prints the GPA of the student given by the user.
+
+    Created by Justin Elak
+    """
     while True:
         student_input = input("Student ID (Example:STU12345):")
         if not university.get_student(student_input):
@@ -58,6 +78,11 @@ def get_student_gpa():
             return
 
 def print_student_course_data():
+    """
+    Prints out the course data for the student given by the user.
+
+    Created By Justin Elak
+    """
     while True:
         student_input = input("Student ID (Example:STU12345):")
         if not university.get_student(student_input):
@@ -68,6 +93,11 @@ def print_student_course_data():
             return
 
 def print_common_students():
+    """
+    Prints out the student intersect between two courses give by the user.
+
+    Created By Justin Elak
+    """
     while True:
         course1_input = input("Course1, Course Code:")
         course2_input = university.get_course(input("Course1, Course Code:"))
@@ -84,8 +114,12 @@ def print_common_students():
             return
 
 def print_course_grade_stats():
-    while True:
+    """
+    Prints out course grade information for the course given by the user.
 
+    Created By Justin Elak
+    """
+    while True:
         course_input = university.get_course(input("Course Code:"))
         if not course_input:
             print("Course does not exist, please try another course.")
