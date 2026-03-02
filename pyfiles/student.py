@@ -218,7 +218,7 @@ class Student:
         :param course: The course object to query the grade for.
         :return: The float (grade point) representation of the grade for the queried course.
 
-        Creted by Jacob Russell
+        Created by Jacob Russell
         """
         return float(self.courses[course])
 
@@ -230,17 +230,17 @@ class Student:
         Created by Jacob Russell
         """
 
-        grade_points = 0
+        accumulated_grade_points = 0
         credits = 0
 
         for (key, value) in self.courses.items():
+            accumulated_grade_points += (key.credits * value.get_grade_point())
             credits += key.credits
-            grade_points += value.get_grade_point()
 
         if credits == 0:
             return 0
 
-        raw_gpa = (grade_points * credits) / credits
+        raw_gpa = accumulated_grade_points / credits
 
         return round(raw_gpa, 2)
 
