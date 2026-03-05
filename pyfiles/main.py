@@ -102,7 +102,7 @@ def print_common_students():
     """
     while True:
         course1_input = input("Course1, Course Code:")
-        course2_input = university.get_course(input("Course1, Course Code:"))
+        course2_input = university.get_course(input("Course2, Course Code:"))
 
         if not university.get_course(course1_input):
             print("Course1's Course Code, does not exist try again.")
