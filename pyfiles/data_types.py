@@ -7,14 +7,24 @@ class Node:
 class DLinkedList:
     def __init__(self, items = None):
         self._len = 0
-        self.head = None
+        self._head = None
         self._tail = None
 
         if items:
             for item in items:
                 self.addlast(item)
 
-    def addlast(self, item):
+    def get_tail(self):
+        if not self._tail:
+            raise("Cannot get tail from empty list")
+        return self._tail.item
+
+    def get_head(self):
+        if not self._head:
+            raise("Cannot get head from empty list")
+        return self._head.item
+
+    def add_last(self, item):
         if self._len == 0:
             node = Node(item)
             self._head = item
@@ -25,7 +35,7 @@ class DLinkedList:
             self._tail = node
         self.len += 1
 
-    def addfirst(self, item):
+    def add_first(self, item):
         if self._len == 0:
             node = Node(item)
             self._head = item
@@ -36,7 +46,7 @@ class DLinkedList:
             self._head = Node
         self.len += 1
 
-    def removefirst(self):
+    def remove_first(self):
         if self._len == 0:
             raise IndexError("Cannot remove from an empty list")
         
@@ -52,7 +62,7 @@ class DLinkedList:
         self._len -= 1
         return removed
 
-    def removelast(self):
+    def remove_last(self):
         if self._len == 0:
             raise IndexError("Cannot remove from an empty list")
         
@@ -91,7 +101,7 @@ class LinkedQueue:
     def peek(self):
         if self._len == 0:
             raise IndexError("Cannot peek into an empty qeueue")
-        return self._list._head.item
+        return self._list.get_head()
     
     def is_empty(self):
-        pass
+        return self._len == 0
