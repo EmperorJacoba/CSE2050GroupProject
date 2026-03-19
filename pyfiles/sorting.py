@@ -1,5 +1,4 @@
-from pyfiles.enrollmentrecord import EnrollmentRecord
-
+from enrollmentrecord import EnrollmentRecord
 
 def is_sorted(l):
     for i in range(len(l)-1):

@@ -54,12 +54,6 @@ class Course:
         else:
             self._add_student(student, enroll_date=enroll_date)
 
-    def drop(self, student_id: str, enroll_date_for_replacement: datetime.date = None):
-        if self._remove_student(self.find_student_from_id(student_id)):
-            if len(self.waitlist) > 0:
-                student_to_enroll = self.waitlist.dequeue()
-                self._add_student(student_to_enroll, enroll_date=enroll_date_for_replacement)
-
     def _remove_student(self, student: Student) -> bool:
         raise ArithmeticError("Please implement remove student!!!")
 
@@ -162,7 +156,7 @@ class Course:
         self.enrollments = sorting.get_algorithm_method(algorithm)(self.enrollments, by)
         self.enrolled_sorted_by = by
 
-    def drop(self, student_id: str):
+    def drop(self, student_id: str, enroll_date_for_replacement: datetime.date = None):
         def recursive_binary_search(records, target_id, low=None, high=None):
             mid = (high-low)//2
 
@@ -173,8 +167,12 @@ class Course:
             else:
                 return recursive_binary_search(records, target_id, mid + 1, high)
 
-        if self.enrollment_sorted_by != "id":
+        if self.enrolled_sorted_by != "id":
             self.sort_enrolled("id", "insertion")
         
         student = recursive_binary_search(self.enrollments, student_id)
         self.enrollments.pop(student)
+
+        if len(self.waitlist) > 0:
+            student_to_enroll = self.waitlist.dequeue()
+            self._add_student(student_to_enroll, enroll_date=enroll_date_for_replacement)
