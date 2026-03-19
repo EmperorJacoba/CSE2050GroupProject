@@ -174,3 +174,19 @@ class Course:
             case _:
                 raise ValueError("Invalid sorting method")
 
+    def drop(self, student_id: str):
+        def recursive_binary_search(records, target_id, low=None, high=None):
+            mid = (high-low)//2
+
+            if records[mid] == target_id:
+                return mid
+            elif records[mid] < target_id:
+                return recursive_binary_search(records, target_id, low, mid -1)
+            else:
+                return recursive_binary_search(records, target_id, mid + 1, high)
+
+        if self.enrollment_sorted_by != "id":
+            self.sort_enrolled("id", "insertion")
+        
+        student = recursive_binary_search(self.enrollments, student_id)
+        self.enrollments.pop(student)
