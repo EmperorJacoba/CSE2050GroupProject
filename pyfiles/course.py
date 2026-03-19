@@ -48,11 +48,11 @@ class Course:
     def get_student_list(self) -> list[Student]:
         return [item.student for item in self.enrollments]
 
-    def request_enroll(self, student: Student, enroll_date: datetime.date):
-        if len(self.enrollments) >= self.capacity:
+    def request_enroll(self, student: Student, grade: Grade = Grade("F"), enroll_date: datetime.date = datetime.date.today()):
+        if student not in self.get_student_list() and len(self.enrollments) >= self.capacity:
             self.waitlist.enqueue(student)
         else:
-            self._add_student(student, enroll_date=enroll_date)
+            self._add_student(student, grade=grade, enroll_date=enroll_date)
 
     def _remove_student(self, student: Student) -> bool:
         raise ArithmeticError("Please implement remove student!!!")
@@ -157,21 +157,21 @@ class Course:
         self.enrolled_sorted_by = by
 
     def drop(self, student_id: str, enroll_date_for_replacement: datetime.date = None):
-        def recursive_binary_search(records, target_id, low=None, high=None):
+        def recursive_binary_search(records, target_id, low=None, high=None) -> int:
             mid = (high-low)//2
 
-            if records[mid] == target_id:
+            if records[mid].get_property("id") == target_id:
                 return mid
-            elif records[mid] < target_id:
-                return recursive_binary_search(records, target_id, low, mid -1)
+            elif records[mid].get_property("id") < target_id:
+                return recursive_binary_search(records, target_id, low, mid - 1)
             else:
                 return recursive_binary_search(records, target_id, mid + 1, high)
 
         if self.enrolled_sorted_by != "id":
             self.sort_enrolled("id", "insertion")
         
-        student = recursive_binary_search(self.enrollments, student_id)
-        self.enrollments.pop(student)
+        student_index = recursive_binary_search(self.enrollments, student_id)
+        self.enrollments.pop(student_index)
 
         if len(self.waitlist) > 0:
             student_to_enroll = self.waitlist.dequeue()

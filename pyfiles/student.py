@@ -1,3 +1,6 @@
+import datetime
+
+
 class Grade:
     """
     A representation of a letter grade. Can be instantiated as a letter grade, integer grade, or decimal grade
@@ -188,7 +191,7 @@ class Student:
         if course not in self.courses.keys():
             self.courses[course] = grade
 
-        course.add_student(self, grade)
+        course.request_enroll(self, enroll_date=datetime.date.today())
 
     def update_grade(self, course, grade: Grade) -> None:
         """
