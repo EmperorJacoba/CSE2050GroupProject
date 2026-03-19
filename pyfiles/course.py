@@ -1,4 +1,7 @@
+import datetime
+
 from enrollmentrecord import EnrollmentRecord
+from data_types import LinkedQueue
 from student import Student, Grade
 
 class Course:
@@ -9,7 +12,13 @@ class Course:
     students: A list of Students enrolled in this course.
     """
 
-    def __init__(self, course_code: str, credits: int, enrollments: list[EnrollmentRecord] = None):
+    def __init__(
+            self,
+            course_code: str,
+            credits: int,
+            enrollments: list[EnrollmentRecord] = None,
+            capacity: int = 256
+        ):
         """
         Creates a new course that represents a course in the university catalog.
         :param course_code: the unique ID of the course (e.g. "CSE 1010", "UNIV 1784").
@@ -23,16 +32,36 @@ class Course:
 
         self.course_code = course_code
         self.credits = credits
+        self.capacity = capacity
+        self.waitlist = LinkedQueue()
 
         if enrollments is not None:
             self.enrollments = enrollments
         else:
             self.enrollments = []
 
+    def find_student_from_id(self, student_id: str) -> Student:
+        raise ArithmeticError("Please implement find student from id")
+
     def get_student_list(self) -> list[Student]:
         return [item.student for item in self.enrollments]
 
-    def add_student(self, student: Student, grade: Grade = Grade("F")) -> None:
+    def request_enroll(self, student: Student, enroll_date: datetime.date):
+        if len(self.enrollments) >= self.capacity:
+            self.waitlist.enqueue(student)
+        else:
+            self._add_student(student, enroll_date=enroll_date)
+
+    def drop(self, student_id: str, enroll_date_for_replacement: datetime.date = None):
+        if self._remove_student(self.find_student_from_id(student_id)):
+            if len(self.waitlist) > 0:
+                student_to_enroll = self.waitlist.dequeue()
+                self._add_student(student_to_enroll, enroll_date=enroll_date_for_replacement)
+
+    def _remove_student(self, student: Student) -> bool:
+        raise ArithmeticError("Please implement remove student!!!")
+
+    def _add_student(self, student: Student, grade: Grade = Grade("F"), enroll_date: datetime.date = None) -> None:
         """
         Add a student to this course's student roster.
         :param student: The student to add to the course.
@@ -43,7 +72,7 @@ class Course:
         """
 
         if student not in self.get_student_list():
-            self.enrollments.append(EnrollmentRecord(student))
+            self.enrollments.append(EnrollmentRecord(student, enroll_date))
             student.enroll(self, grade)
         else:
             student.update_grade(self, grade)
