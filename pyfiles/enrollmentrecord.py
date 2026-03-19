@@ -9,3 +9,14 @@ class EnrollmentRecord:
         else:
             self.enroll_date = enroll_date
 
+    def get_property(self, type: str):
+        match type:
+            case "name":
+                return self.student.name
+            case "id":
+                return self.student.student_id
+            case "date":
+                return self.enroll_date
+            case _:
+                raise ValueError("Invalid sorting method")
+
