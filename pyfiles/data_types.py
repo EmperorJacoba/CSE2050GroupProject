@@ -88,13 +88,13 @@ class LinkedQueue:
         self._len = 0
     
     def enqueue(self, item):
-        self._list.addlast(item)
+        self._list.add_last(item)
         self._len += 1
 
     def dequeue(self):
         if self._len == 0:
             raise IndexError("Cannot remove from an empty queue")
-        removed = self._list.removefirst()
+        removed = self._list.remove_first()
         self._len -= 1
         return removed
         
