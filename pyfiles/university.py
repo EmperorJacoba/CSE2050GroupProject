@@ -99,7 +99,7 @@ class University:
         if found_course is None:
             return 0
 
-        return len(found_course.students)
+        return len(found_course.enrollments)
 
     def get_students_in_course(self, course_code: str) -> list[Student]:
         """
@@ -115,7 +115,7 @@ class University:
         if found_course is None:
             return []
 
-        return found_course.students
+        return found_course.enrollments
 
     def get_mean_gpa(self) -> float:
         """
@@ -163,7 +163,7 @@ class University:
         Created by Justin Elak
         """
         if course_code in self.courses.keys():
-            for student in self.courses[course_code].students:
+            for student in self.courses[course_code].enrollments:
                 print(student.name)
         else:
             raise IndexError("Given course is not in the course dict.")

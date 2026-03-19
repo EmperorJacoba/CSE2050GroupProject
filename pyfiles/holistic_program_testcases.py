@@ -37,7 +37,7 @@ class TestCourse(unittest.TestCase):
 
         self.assertEqual(course1.course_code, "CSE 2050")
         self.assertEqual(course1.credits, 3)
-        self.assertEqual(course1.students, [])
+        self.assertEqual(course1.enrollments, [])
 
     def test_add_student(self):
         """
@@ -49,7 +49,7 @@ class TestCourse(unittest.TestCase):
         student1 = Student("STU74823", "Justin", {})
 
         course1.add_student(student1)
-        self.assertEqual(course1.students, [student1])
+        self.assertEqual(course1.enrollments, [student1])
         self.assertEqual(list(student1.courses.keys())[0], course1)
 
     def test_duplicate_add_student(self):
@@ -64,7 +64,7 @@ class TestCourse(unittest.TestCase):
         course1.add_student(student1)
         course1.add_student(student1)
 
-        self.assertEqual(course1.students, [student1])
+        self.assertEqual(course1.enrollments, [student1])
 
     def test_get_student_count(self):
         """
@@ -146,7 +146,7 @@ class TestStudent(unittest.TestCase):
 
         student1.enroll(course1, Grade("A"))
         self.assertEqual(student1.courses, {course1 : Grade("A")})
-        self.assertEqual(course1.students, [student1])
+        self.assertEqual(course1.enrollments, [student1])
 
     def test_calculate_gpa(self):
         """

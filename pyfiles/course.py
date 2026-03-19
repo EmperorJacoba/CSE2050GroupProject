@@ -1,3 +1,4 @@
+from enrollmentrecord import EnrollmentRecord
 from student import Student, Grade
 
 class Course:
@@ -8,12 +9,12 @@ class Course:
     students: A list of Students enrolled in this course.
     """
 
-    def __init__(self, course_code: str, credits: int, students: list[Student] = None):
+    def __init__(self, course_code: str, credits: int, enrollments: list[EnrollmentRecord] = None):
         """
         Creates a new course that represents a course in the university catalog.
         :param course_code: the unique ID of the course (e.g. "CSE 1010", "UNIV 1784").
         :param credits: number of credits earned for completing the course.
-        :param students: list of all students enrolled in this course.
+        :param enrollments: list of all students enrolled in this course.
 
         Created by Jacob Russell
         """
@@ -23,10 +24,13 @@ class Course:
         self.course_code = course_code
         self.credits = credits
 
-        if students is not None:
-            self.students = students
+        if enrollments is not None:
+            self.enrollments = enrollments
         else:
-            self.students = []
+            self.enrollments = []
+
+    def get_student_list(self) -> list[Student]:
+        return [item.student for item in self.enrollments]
 
     def add_student(self, student: Student, grade: Grade = Grade("F")) -> None:
         """
@@ -38,15 +42,15 @@ class Course:
         Created by Jacob Russell
         """
 
-        if student not in self.students:
-            self.students.append(student)
+        if student not in self.get_student_list():
+            self.enrollments.append(EnrollmentRecord(student))
             student.enroll(self, grade)
         else:
             student.update_grade(self, grade)
 
     def get_student_count(self) -> int:
         """Get the number of students currently enrolled in this course."""
-        return len(self.students)
+        return len(self.enrollments)
 
     def get_student_intersect(self, other_course: "Course") -> list[Student]:
         """
@@ -58,9 +62,11 @@ class Course:
         """
 
         intersecting_students = []
-        for student in self.students:
-            if student in other_course.students:
+        other_course_students = other_course.get_student_list()
+        for student in self.get_student_list():
+            if student in other_course_students:
                 intersecting_students.append(student.student_id)
+
         return intersecting_students
 
     def get_mode_grade_point(self) -> float:
@@ -73,7 +79,7 @@ class Course:
         """
         count_dictionary = {}
 
-        for student in self.students:
+        for student in self.get_student_list():
             grade = student.get_course_grade_float(self)
             if grade in count_dictionary:
                 count_dictionary[grade] = count_dictionary[grade] + 1
@@ -91,7 +97,7 @@ class Course:
 
         Created by Jacob Russell
         """
-        grade_list = [student.get_course_grade_float(self) for student in self.students]
+        grade_list = [student.get_course_grade_float(self) for student in self.get_student_list()]
 
         if not grade_list:
             return 0
@@ -114,7 +120,7 @@ class Course:
 
         Created by Jacob Russell
         """
-        grade_list = [student.get_course_grade_float(self) for student in self.students]
+        grade_list = [student.get_course_grade_float(self) for student in self.get_student_list()]
 
         if not grade_list:
             return 0
