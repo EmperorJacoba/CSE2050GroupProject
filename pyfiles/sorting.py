@@ -13,7 +13,6 @@ def bubble(l):
                 l[y], l[y+1] = l[y+1], l[y]
         if not swapped:
             return
-            
 
 def insertion(l):
     for i in range(len(l)):

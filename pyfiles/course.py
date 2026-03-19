@@ -34,6 +34,7 @@ class Course:
         self.credits = credits
         self.capacity = capacity
         self.waitlist = LinkedQueue()
+        self.enrolled_sorted_by = None
 
         if enrollments is not None:
             self.enrollments = enrollments
@@ -155,4 +156,21 @@ class Course:
             return 0
 
         return sum(grade_list) / len(grade_list)
+
+    def sort_enrolled(self, by: str, algorithm: str):
+        match by:
+            case "name":
+
+                self.enrolled_sorted_by = "name"
+                pass
+            case "id":
+
+                self.enrolled_sorted_by = "id"
+                pass
+            case "date":
+
+                self.enrolled_sorted_by = "date"
+                pass
+            case _:
+                raise ValueError("Invalid sorting method")
 
