@@ -1,10 +1,9 @@
 class Node:
-    def __init__(self, item, prev = None, next = None):
+    def __init__(self, item, next = None):
         self.item = item
-        self.prev = prev
         self.next = next
 
-class DLinkedList:
+class LinkedList:
     def __init__(self, items = None):
         self._len = 0
         self._head = None
@@ -12,28 +11,28 @@ class DLinkedList:
 
         if items:
             for item in items:
-                self.addlast(item)
+                self.add_last(item)
 
     def get_tail(self):
         if not self._tail:
-            raise("Cannot get tail from empty list")
+            raise IndexError("Cannot get tail from empty list")
         return self._tail.item
 
     def get_head(self):
         if not self._head:
-            raise("Cannot get head from empty list")
+            raise IndexError("Cannot get head from empty list")
         return self._head.item
 
     def add_last(self, item):
         if self._len == 0:
             node = Node(item)
-            self._head = item
-            self._tail = item
+            self._head = node
+            self._tail = node
         else:
-            node = Node(item,self._tail)
+            node = Node(item, None)
             self._tail.next = node
             self._tail = node
-        self.len += 1
+        self._len += 1
 
     def add_first(self, item):
         if self._len == 0:
@@ -41,10 +40,9 @@ class DLinkedList:
             self._head = item
             self._tail = item
         else:
-            node = Node(item, None, self._head)
-            self._head.prev = node
-            self._head = Node
-        self.len += 1
+            node = Node(item, self._head)
+            self._head = node
+        self._len += 1
 
     def remove_first(self):
         if self._len == 0:
@@ -72,7 +70,10 @@ class DLinkedList:
             self._tail = None
             self._head = None
         else:
-            self._tail = self._tail.prev
+            current_item = self._head
+            while current_item.next is not self._tail:
+                current_item = current_item.next
+            self._tail = current_item
             self._tail.next = None
 
         self._len -= 1
@@ -84,7 +85,7 @@ class DLinkedList:
 
 class LinkedQueue:
     def __init__(self):
-        self._list = DLinkedList()
+        self._list = LinkedList()
         self._len = 0
     
     def enqueue(self, item):
@@ -100,7 +101,7 @@ class LinkedQueue:
         
     def peek(self):
         if self._len == 0:
-            raise IndexError("Cannot peek into an empty qeueue")
+            raise IndexError("Cannot peek into an empty queue")
         return self._list.get_head()
     
     def is_empty(self):
