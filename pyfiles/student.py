@@ -1,6 +1,5 @@
 import datetime
 
-
 class Grade:
     """
     A representation of a letter grade. Can be instantiated as a letter grade, integer grade, or decimal grade
@@ -107,7 +106,6 @@ class Grade:
         """
         return Grade.GRADE_POINTS[self.grade]
 
-
 def validate_student_id(student_id: str) -> bool:
     """
     Determine if a given student ID is valid. Raises an error if it is not valid, returns True otherwise.
@@ -179,11 +177,12 @@ class Student:
     # Use a grade class (setup below) to store and validate grades from string
     # Allows easy storage, calculation, conversion of grades. Convert from string formatted like "A+" or float like 98.0
     # Overloads for these!
-    def enroll(self, course, grade: Grade) -> None:
+    def enroll(self, course, grade: Grade, enroll_date: datetime.date = datetime.date.today()) -> None:
         """
         Enroll a student in a given course with a specified grade. Updates the corresponding course to match.
         :param course: The course object to enroll the student in.
         :param grade: The student's received grade in the course, as a Grade object.
+        :param enroll_date: The date the student enrolled in the course. Today's date if none specified.
 
         Created by Jacob Russell
         """
@@ -194,7 +193,7 @@ class Student:
         if course not in self.courses.keys():
             self.courses[course] = grade
 
-        course.request_enroll(self, enroll_date=datetime.date.today())
+        course.request_enroll(self, enroll_date=enroll_date)
 
     def update_grade(self, course, grade: Grade) -> None:
         """
@@ -256,6 +255,7 @@ class Student:
 
         Created by Jacob Russell
         """
+
         print(self.calculate_gpa())
 
     def get_courses(self) -> list:
