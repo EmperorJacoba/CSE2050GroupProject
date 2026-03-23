@@ -156,22 +156,44 @@ class Course:
         self.enrollments = sorting.get_algorithm_method(algorithm)(self.enrollments, by)
         self.enrolled_sorted_by = by
 
-    def drop(self, student_id: str, enroll_date_for_replacement: datetime.date = None):
+    def get_student_enrollment_data(self, student_id):
+        index = self.sort_and_find_student_index(student_id)
+        if index < 0:
+            raise ValueError(f"No student with ID {student_id} is enrolled in this course.")
+        return self.enrollments[index]
+
+    def sort_and_find_student_index(self, student_id):
         def recursive_binary_search(records, target_id, low=None, high=None) -> int:
-            mid = (high-low)//2
+            if low is None or high is None:
+                low, high = 0, len(records) - 1
+            if low > high:
+                return -1
+
+            if low == high:
+                if records[low].get_property("id") == target_id:
+                    return low
+
+                return -1
+
+            mid = (high - low) // 2
 
             if records[mid].get_property("id") == target_id:
                 return mid
-            elif records[mid].get_property("id") < target_id:
+            elif records[mid].get_property("id") > target_id:
                 return recursive_binary_search(records, target_id, low, mid - 1)
             else:
                 return recursive_binary_search(records, target_id, mid + 1, high)
 
         if self.enrolled_sorted_by != "id":
             self.sort_enrolled("id", "insertion")
-        
-        student_index = recursive_binary_search(self.enrollments, student_id)
-        self.enrollments.pop(student_index)
+
+        return recursive_binary_search(self.enrollments, student_id)
+
+    def drop(self, student_id: str, enroll_date_for_replacement: datetime.date = None):
+        index = self.sort_and_find_student_index(student_id)
+        if index == -1:
+            raise ValueError(f"No student with ID {student_id} is enrolled in this course")
+        self.enrollments.pop(index)
 
         if len(self.waitlist) > 0:
             student_to_enroll = self.waitlist.dequeue()

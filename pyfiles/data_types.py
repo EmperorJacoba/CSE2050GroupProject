@@ -37,8 +37,8 @@ class LinkedList:
     def add_first(self, item):
         if self._len == 0:
             node = Node(item)
-            self._head = item
-            self._tail = item
+            self._head = node
+            self._tail = node
         else:
             node = Node(item, self._head)
             self._head = node

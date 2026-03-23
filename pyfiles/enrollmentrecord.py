@@ -18,5 +18,8 @@ class EnrollmentRecord:
             case "date":
                 return self.enroll_date
             case _:
-                raise ValueError("Invalid sorting method")
+                raise ValueError(f"Invalid sorting method, {type}")
+
+    def __str__(self):
+        return f"{self.student}, enroll time: {self.enroll_date}"
 
