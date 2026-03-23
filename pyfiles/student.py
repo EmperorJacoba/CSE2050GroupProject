@@ -173,6 +173,9 @@ class Student:
         else:
             self.courses = {}
 
+    def __str__(self):
+        return f"Student ID {self.student_id}: {self.name}, Courses: {self.courses.items()}"
+
     # Use a grade class (setup below) to store and validate grades from string
     # Allows easy storage, calculation, conversion of grades. Convert from string formatted like "A+" or float like 98.0
     # Overloads for these!
