@@ -42,22 +42,26 @@ class Course:
         else:
             self.enrollments = []
 
-    def find_student_from_id(self, student_id: str) -> Student:
-        raise ArithmeticError("Please implement find student from id")
+    def request_enroll(
+            self,
+            student: Student,
+            grade: Grade = Grade("F"),
+            enroll_date: datetime.date = datetime.date.today()
+    ) -> bool:
 
-    def get_student_list(self) -> list[Student]:
-        return [item.student for item in self.enrollments]
-
-    def request_enroll(self, student: Student, grade: Grade = Grade("F"), enroll_date: datetime.date = datetime.date.today()):
         if student not in self.get_student_list() and len(self.enrollments) >= self.capacity:
             self.waitlist.enqueue(student)
+            return False
         else:
             self._add_student(student, grade=grade, enroll_date=enroll_date)
+            return True
 
-    def _remove_student(self, student: Student) -> bool:
-        raise ArithmeticError("Please implement remove student!!!")
-
-    def _add_student(self, student: Student, grade: Grade = Grade("F"), enroll_date: datetime.date = None) -> None:
+    def _add_student(
+            self,
+            student: Student,
+            grade: Grade = Grade("F"),
+            enroll_date: datetime.date = None
+    ):
         """
         Add a student to this course's student roster.
         :param student: The student to add to the course.
@@ -67,32 +71,69 @@ class Course:
         Created by Jacob Russell
         """
 
-        if student not in self.get_student_list():
+        if self.sort_and_find_student_index(student.student_id) == -1: # Student DNE
             self.enrollments.append(EnrollmentRecord(student, enroll_date))
-            student.enroll(self, grade)
+            student.force_enroll(self, grade)
         else:
             student.update_grade(self, grade)
+
+    def sort_enrolled(self, by: str, algorithm: str):
+        self.enrollments = sorting.get_algorithm_method(algorithm)(self.enrollments, by)
+        self.enrolled_sorted_by = by
+
+    def get_student_enrollment_data(self, student_id):
+        index = self.sort_and_find_student_index(student_id)
+        if index < 0:
+            raise ValueError(f"No student with ID {student_id} is enrolled in this course.")
+        return self.enrollments[index]
+
+    def sort_and_find_student_index(self, student_id):
+        def recursive_binary_search(records, target_id, low=None, high=None) -> int:
+            if low is None or high is None:
+                low, high = 0, len(records) - 1
+            if low > high:
+                return -1
+
+            if low == high:
+                if records[low].get_property("id") == target_id:
+                    return low
+
+                return -1
+
+            mid = (high - low) // 2
+
+            if records[mid].get_property("id") == target_id:
+                return mid
+            elif records[mid].get_property("id") > target_id:
+                return recursive_binary_search(records, target_id, low, mid - 1)
+            else:
+                return recursive_binary_search(records, target_id, mid + 1, high)
+
+        if self.enrolled_sorted_by != "id":
+            self.sort_enrolled("id", "insertion")
+
+        return recursive_binary_search(self.enrollments, student_id)
+
+    def drop(self, student_id: str, enroll_date_for_replacement: datetime.date = None):
+        index = self.sort_and_find_student_index(student_id)
+
+        if index == -1:
+            raise ValueError(f"No student with ID {student_id} is enrolled in this course")
+
+        self.enrollments.pop(index)
+
+        if len(self.waitlist) > 0:
+            student_to_enroll = self.waitlist.dequeue()
+            self._add_student(student_to_enroll, enroll_date=enroll_date_for_replacement)
+
+    # <editor-fold desc="Statistics">
+
+    def get_student_list(self) -> list[Student]:
+        return [item.student for item in self.enrollments]
 
     def get_student_count(self) -> int:
         """Get the number of students currently enrolled in this course."""
         return len(self.enrollments)
-
-    def get_student_intersect(self, other_course: "Course") -> list[Student]:
-        """
-        Return the intersecting students between courses
-        :param other_course: Another course object to compare with.
-        :return: A list of all students that are in both courses.
-
-        Created by Justin Elak
-        """
-
-        intersecting_students = []
-        other_course_students = other_course.get_student_list()
-        for student in self.get_student_list():
-            if student in other_course_students:
-                intersecting_students.append(student.student_id)
-
-        return intersecting_students
 
     def get_mode_grade_point(self) -> float:
         """
@@ -152,49 +193,21 @@ class Course:
 
         return sum(grade_list) / len(grade_list)
 
-    def sort_enrolled(self, by: str, algorithm: str):
-        self.enrollments = sorting.get_algorithm_method(algorithm)(self.enrollments, by)
-        self.enrolled_sorted_by = by
+    def get_student_intersect(self, other_course: "Course") -> list[Student]:
+        """
+        Return the intersecting students between courses
+        :param other_course: Another course object to compare with.
+        :return: A list of all students that are in both courses.
 
-    def get_student_enrollment_data(self, student_id):
-        index = self.sort_and_find_student_index(student_id)
-        if index < 0:
-            raise ValueError(f"No student with ID {student_id} is enrolled in this course.")
-        return self.enrollments[index]
+        Created by Justin Elak
+        """
 
-    def sort_and_find_student_index(self, student_id):
-        def recursive_binary_search(records, target_id, low=None, high=None) -> int:
-            if low is None or high is None:
-                low, high = 0, len(records) - 1
-            if low > high:
-                return -1
+        intersecting_students = []
+        other_course_students = other_course.get_student_list()
+        for student in self.get_student_list():
+            if student in other_course_students:
+                intersecting_students.append(student.student_id)
 
-            if low == high:
-                if records[low].get_property("id") == target_id:
-                    return low
+        return intersecting_students
 
-                return -1
-
-            mid = (high - low) // 2
-
-            if records[mid].get_property("id") == target_id:
-                return mid
-            elif records[mid].get_property("id") > target_id:
-                return recursive_binary_search(records, target_id, low, mid - 1)
-            else:
-                return recursive_binary_search(records, target_id, mid + 1, high)
-
-        if self.enrolled_sorted_by != "id":
-            self.sort_enrolled("id", "insertion")
-
-        return recursive_binary_search(self.enrollments, student_id)
-
-    def drop(self, student_id: str, enroll_date_for_replacement: datetime.date = None):
-        index = self.sort_and_find_student_index(student_id)
-        if index == -1:
-            raise ValueError(f"No student with ID {student_id} is enrolled in this course")
-        self.enrollments.pop(index)
-
-        if len(self.waitlist) > 0:
-            student_to_enroll = self.waitlist.dequeue()
-            self._add_student(student_to_enroll, enroll_date=enroll_date_for_replacement)
+    # </editor-fold>

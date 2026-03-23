@@ -1,5 +1,7 @@
 import datetime
 
+# <editor-fold desc="Grade class">
+
 class Grade:
     """
     A representation of a letter grade. Can be instantiated as a letter grade, integer grade, or decimal grade
@@ -106,6 +108,8 @@ class Grade:
         """
         return Grade.GRADE_POINTS[self.grade]
 
+# </editor-fold>
+
 def validate_student_id(student_id: str) -> bool:
     """
     Determine if a given student ID is valid. Raises an error if it is not valid, returns True otherwise.
@@ -146,7 +150,12 @@ class Student:
         Value: The letter grade (e.g. "A", "B+") of the student as a Grade object.
     """
 
-    def __init__(self, student_id: str, name: str, courses: dict = None):
+    def __init__(
+            self,
+            student_id: str,
+            name: str,
+            courses: dict = None
+    ):
         """
         Create a new student with its related information.
         :param student_id: Student's unique identifier.
@@ -177,23 +186,27 @@ class Student:
     # Use a grade class (setup below) to store and validate grades from string
     # Allows easy storage, calculation, conversion of grades. Convert from string formatted like "A+" or float like 98.0
     # Overloads for these!
-    def enroll(self, course, grade: Grade, enroll_date: datetime.date = datetime.date.today()) -> None:
+    def enroll(
+            self,
+            course,
+            grade: Grade,
+            enroll_date: datetime.date = datetime.date.today()
+    ):
+
         """
         Enroll a student in a given course with a specified grade. Updates the corresponding course to match.
         :param course: The course object to enroll the student in.
-        :param grade: The student's received grade in the course, as a Grade object.
+        :param grade: The student's received grade in the course, as a Grade object
         :param enroll_date: The date the student enrolled in the course. Today's date if none specified.
 
         Created by Jacob Russell
         """
 
-        if isinstance(grade, str):
-            grade = Grade(grade)
+        if course not in self.courses.keys() and course.request_enroll(self, enroll_date=enroll_date):
+            self.force_enroll(course, grade)
 
-        if course not in self.courses.keys():
-            self.courses[course] = grade
-
-        course.request_enroll(self, enroll_date=enroll_date)
+    def force_enroll(self, course, grade: Grade):
+        self.courses[course] = grade
 
     def update_grade(self, course, grade: Grade) -> None:
         """
@@ -227,6 +240,8 @@ class Student:
         """
         return float(self.courses[course])
 
+    # <editor-fold desc="GPA">
+
     def calculate_gpa(self) -> float:
         """
         Calculate the grade-point average of the student.
@@ -258,6 +273,10 @@ class Student:
 
         print(self.calculate_gpa())
 
+    # </editor-fold>
+
+    # <editor-fold desc="Course get">
+
     def get_courses(self) -> list:
         """
         Get a list of all courses this student is taking.
@@ -281,3 +300,5 @@ class Student:
 
         output_string += f"\nStudent's GPA: {self.calculate_gpa()}"
         return output_string
+
+    # </editor-fold>
