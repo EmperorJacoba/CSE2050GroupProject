@@ -59,7 +59,7 @@ class TestCourseMilestone2Features(unittest.TestCase):
         self.student2 = Student("STU00002", "Albert")
         self.student3 = Student("STU00003", "Brainiac")
 
-        self.course_test.request_enroll(self.student1, enroll_date=datetime.date(2002, 1, 1), grade=Grad)
+        self.course_test.request_enroll(self.student1, enroll_date=datetime.date(2002, 1, 1))
         self.course_test.request_enroll(self.student2, enroll_date=datetime.date(2001, 1, 1))
         self.course_test.request_enroll(self.student3, enroll_date=datetime.date(2000, 1, 1))
 

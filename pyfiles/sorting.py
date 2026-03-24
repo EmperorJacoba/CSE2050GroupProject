@@ -23,6 +23,7 @@ def insertion(L: list[EnrollmentRecord], property: str) -> list[EnrollmentRecord
         for j in range(len(L) - i, len(L)):
             if L[j - 1].get_property(property) > L[j].get_property(property):
                 L[j - 1], L[j] = L[j], L[j - 1]
+            else: break
 
     return L
 
@@ -37,7 +38,7 @@ def get_algorithm_method(algorithm_type: str):
 
 
 if __name__ == "__main__":
-    testarr = [25,67,1,6,2,3,4,5,10,125,5,6,7,7]
+    testarr = [25,67,1,6,2,3,4,5,10,125,5,6,7,7,1024]
     insertion(testarr)
     print(testarr)
     print(is_sorted(testarr))
