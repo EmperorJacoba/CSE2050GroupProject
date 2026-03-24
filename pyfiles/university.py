@@ -27,7 +27,7 @@ class University:
         else:
             self.courses = {}
 
-    def add_course(self, course_code: str, credits: int, capacity: int) -> Course:
+    def add_course(self, course_code: str, credits: int, capacity=255) -> Course:
         """
         Add a new course offering to this University.
         :param course_code: The course code of the course being added.

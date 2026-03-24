@@ -20,9 +20,9 @@ def read_course_data(uni: University, path: str) -> None:
     with open(path, "r", newline='') as csvfile:
         csvreader = csv.DictReader(csvfile)
         for row in csvreader:
-            course_code = row["course_code"]
+            course_code = row["course_id"]
             course_credits = int(row["credits"])
-            uni.add_course(course_code,course_credits)
+            uni.add_course(course_code, course_credits)
 
 def read_uni_data(uni: University, path: str) -> None:
     """
@@ -51,3 +51,26 @@ def read_uni_data(uni: University, path: str) -> None:
             #Enroll students into course with grade from dict
             for course in grades:
                 student.enroll(uni.get_course(course), Grade(grades[course]))
+
+def read_course_capacity_data(uni: University, path: str):
+    with open(path, "r", newline='') as csvfile:
+        csvreader = csv.DictReader(csvfile)
+        for row in csvreader:
+            course_code = row["course_id"]
+            course_credits = int(row["credits"])
+            course_capacity = int(row["capacity"])
+
+            uni.add_course(course_code, course_credits, course_capacity)
+
+def read_enrollment_data(uni: University, path: str):
+    with open(path, "r", newline='') as csvfile:
+        csvreader = csv.DictReader(csvfile)
+        for row in csvreader:
+            student = uni.get_student((row["student_id"]))
+            course = uni.get_course(row["course_id"])
+            if not student:
+                raise ValueError("Student does not exist")
+            if not course:
+                raise ValueError("Course does not exist")
+
+            course.request_enroll(student)
