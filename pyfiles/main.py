@@ -160,10 +160,14 @@ if __name__ == "__main__":
         )
     course_cat = sys.argv[1]
     student_data = sys.argv[2]
+    enrollment_data = sys.argv[3]
+    course_cat_cap = sys.argv[4]
 
     university = University()
     csv_parser.read_course_data(university, course_cat)
+    csv_parser.read_course_capacity_data(university, course_cat_cap)
     csv_parser.read_uni_data(university, student_data)
+    csv_parser.read_enrollment_data(university, enrollment_data)
 
     print(f"Median GPA: {university.get_median_gpa():.2f}")
     print(f"Mean GPA: {university.get_mean_gpa():.2f}")
