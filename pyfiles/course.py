@@ -94,13 +94,7 @@ class Course:
             if low > high:
                 return -1
 
-            if low == high:
-                if records[low].get_property("id") == target_id:
-                    return low
-
-                return -1
-
-            mid = (high - low) // 2
+            mid = (high + low) // 2
 
             if records[mid].get_property("id") == target_id:
                 return mid

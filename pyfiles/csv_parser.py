@@ -20,7 +20,7 @@ def read_course_data(uni: University, path: str) -> None:
     with open(path, "r", newline='') as csvfile:
         csvreader = csv.DictReader(csvfile)
         for row in csvreader:
-            course_code = row["course_id"]
+            course_code = row["course_code"]
             course_credits = int(row["credits"])
             uni.add_course(course_code, course_credits)
 
@@ -74,3 +74,28 @@ def read_enrollment_data(uni: University, path: str):
                 raise ValueError("Course does not exist")
 
             course.request_enroll(student)
+
+if __name__ == "__main__":
+    direct = "csv_files/"
+    catalog = direct+"course_catalog_CSE10_with_capacity.csv"
+    enrollments = direct+"enrollments_CSE10.csv"
+    university_data = direct+"university_data.csv"
+    course = direct+"course_catalog.csv"
+
+    test_university = University()
+    read_course_data(test_university, course)
+    read_course_capacity_data(test_university, catalog)
+    read_uni_data(test_university, university_data)
+    read_enrollment_data(test_university, enrollments)
+
+    for course in test_university.courses:
+        course = test_university.get_course(course)
+        print("Course:", course.course_code)
+        for student in course.enrollments:
+            print(student.student.student_id, end=", ")
+        print()
+        print("Waitlist:")
+        while not course.waitlist.is_empty():
+            print(course.waitlist.dequeue().student_id, end=", ")
+        print()
+        print()
