@@ -1,6 +1,184 @@
 import sys
 import csv_parser
+from enrollmentrecord import EnrollmentRecord
 from university import University
+
+def print_menu_v2():
+    menu = """
+[Options (Milestone 2)]
+a: View student data
+b: Add student
+c: View/Edit course data 
+q: Quit
+    """
+    print(menu)
+
+def prompt():
+    """
+    Displays a menu of options as well as giving the user the ability to select one of the options.
+
+    Created By Justin Elak
+    """
+    print_menu_v2()
+    menu_input = input("\nSelect a menu option: ").lower()
+
+    match menu_input:
+        case "a":
+            print_student_data_filter(
+                input("\tEnter student ID: ")
+            )
+
+        case "b":
+            add_student_data()
+
+        case "c":
+            print_course_data_filter(
+                input("\tEnter course ID: ")
+            )
+
+        case "q":
+            return
+
+        case _:
+            print("Invalid Input, try again.")
+
+    prompt()
+
+def print_student_data_filter(student_id):
+    if student := university.get_student(student_id):
+        print_student_data(student)
+    else:
+        print("Invalid student ID.")
+
+    input("Hit enter to exit back to menu.")
+
+def print_student_data(student):
+    data_formatted = f"""
+Student {student.student_id}. ({student.name}):
+GPA: {student.calculate_gpa()}
+Enrolled courses:
+{student.get_course_info_no_formatting()}
+"""
+
+    print(data_formatted)
+
+def add_student_data():
+    pass
+
+def print_course_data_filter(course_id):
+    if course := university.get_course(course_id):
+        print_course_data(course)
+    else:
+        print("Invalid course ID.")
+
+    input("Hit enter to exit back to menu.")
+
+def print_course_data(course):
+    data_formatted = f"""
+Course {course.course_code}. {course.credits} credits.
+Capacity: {course.capacity}. Number of students on waitlist: {len(course.waitlist)}
+
+Statistics:
+Mean: {course.get_mean_grade_point():.2f}
+Median: {course.get_median_grade_point():.2f}
+Mode: {course.get_mode_grade_point():.2f}
+
+Show course waitlist and roster? (y/n)
+"""
+    print(data_formatted)
+
+    yn = input()
+    if yn.strip() == "y":
+        print(format_waitlist(course))
+        print(format_student_list(course.enrollments))
+
+        while True:
+            sort = input(f"""
+            Sort by different method? Currently sorted by {course.enrolled_sorted_by}.
+            Enter "id", "name" or "date". If not, use any other string to exit.
+            """)
+
+            if sort not in ["id", "name", "date"]:
+                break
+            else:
+                course.sort_enrolled(sort, "insertion")
+                print(format_student_list(course.enrollments))
+
+    yn = input("Edit course information?")
+    if yn.strip() == "y":
+        edit_course_info(course)
+
+def edit_course_info(course):
+    menu = f"""
+[Edit options for course {course.course_id}]
+a: Enroll student
+b: Drop student
+q: exit
+    """
+    print(menu)
+    menu_input = input("\nSelect a menu option: ").lower()
+    match menu_input:
+        case "a":
+            if student := university.get_student(
+                    input(
+                        "Enter student ID to enroll. "
+                    )
+            ):
+                course.request_enroll(student)
+            else:
+                "Invalid student id."
+        case "b":
+            if student := university.get_student(
+                    input(
+                        "Enter student ID to enroll. "
+                    )
+            ):
+                course.drop(student)
+        case _:
+            return
+
+    print()
+    edit_course_info(course)
+
+def format_waitlist(course):
+    output_string = "Waitlist: "
+    for i in course.waitlist.peek_all():
+        output_string += f", {i.student_id} ({i.name})"
+    return output_string
+
+def format_student_list(list_enrollments: list[EnrollmentRecord]):
+    output_string = ""
+    for i in list_enrollments:
+        output_string += f"{i.get_property("id"): {i.get_property("name")} Enrolled {i.get_property("date")}}"
+    return output_string
+
+if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        raise ValueError(
+            "Incorrect number of command-line arguments passed to script. Please provide two .csv_files files: a .csv_files file with "
+            "course data and .csv_files file with university/student data."
+        )
+    course_cat = sys.argv[1]
+    student_data = sys.argv[2]
+
+    university = University()
+    csv_parser.read_course_data(university, course_cat)
+    csv_parser.read_uni_data(university, student_data)
+
+    print(f"Median GPA: {university.get_median_gpa():.2f}")
+    print(f"Mean GPA: {university.get_mean_gpa():.2f}")
+
+    user_input = input("Would you like to view more options? [y/n]: ").lower()
+    while user_input != "n":
+        match user_input:
+            case "y":
+                prompt()
+                break
+            case _:
+                print("Invalid Input, try again.")
+                user_input = input("Would you like to view more options? [y/n]: ").lower()
+
+# <editor-fold desc="Old">
 
 def print_menu():
     """
@@ -16,37 +194,6 @@ def print_menu():
     print("e: Print mean/med/mode for a course")
     print("q: Quit")
 
-def prompt_user():
-    """
-    Displays a menu of options as well as giving the user the ability to select one of the options.
-
-    Created By Justin Elak
-    """
-    menu_input = None
-    while menu_input != "q":
-        print_menu()
-        menu_input = input("Select a menu option: ").lower()
-        match menu_input:
-            case "a":
-                get_students_in_course()
-
-            case "b":
-                get_student_gpa()
-
-            case "c":
-                print_student_course_data()
-
-            case "d":
-                print_common_students()
-
-            case "e":
-                print_course_grade_stats()
-
-            case "q":
-                pass
-
-            case _:
-                print("Invalid Input, try again.")
 
 def get_students_in_course():
     """
@@ -133,29 +280,4 @@ def print_course_grade_stats():
             input("Hit enter to exit:")
             return
 
-if __name__ == "__main__":
-
-    if len(sys.argv) != 3:
-        raise ValueError(
-            "Incorrect number of command-line arguments passed to script. Please provide two .csv_files files: a .csv_files file with "
-            "course data and .csv_files file with university/student data."
-        )
-    course_cat = sys.argv[1]
-    student_data = sys.argv[2]
-
-    university = University()
-    csv_parser.read_course_data(university, course_cat)
-    csv_parser.read_uni_data(university, student_data)
-
-    print(f"Median GPA: {university.get_median_gpa():.2f}")
-    print(f"Mean GPA: {university.get_mean_gpa():.2f}")
-
-    user_input = input("Would you like to view more options? [y/n]: ").lower()
-    while user_input != "n":
-        match user_input:
-            case "y":
-                prompt_user()
-                break
-            case _:
-                print("Invalid Input, try again.")
-                user_input = input("Would you like to view more options? [y/n]: ").lower()
+# </editor-fold>

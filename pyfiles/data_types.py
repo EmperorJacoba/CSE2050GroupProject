@@ -103,6 +103,17 @@ class LinkedQueue:
         if self._len == 0:
             raise IndexError("Cannot peek into an empty queue")
         return self._list.get_head()
+
+    def peek_all(self) -> list:
+        if len(self) == 0: return []
+
+        list = []
+        node = self._list._head
+        while node:
+            list.append(node.item)
+            node = node.next
+
+        return list
     
     def is_empty(self):
         return self._len == 0
