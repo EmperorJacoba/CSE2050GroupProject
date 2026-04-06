@@ -1,7 +1,7 @@
 import datetime
 
-from enrollmentrecord import EnrollmentRecord
-from data_types import LinkedQueue
+from enrollment_record import EnrollmentRecord
+from linked_list import LinkedQueue
 from student import Student, Grade
 import sorting
 

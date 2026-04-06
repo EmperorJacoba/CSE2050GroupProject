@@ -2,7 +2,7 @@ import datetime
 import unittest
 from course import Course
 from student import Student, Grade
-from data_types import LinkedQueue
+from linked_list import LinkedQueue
 from university import University
 
 class TestLinkedQueue(unittest.TestCase):

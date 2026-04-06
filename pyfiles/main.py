@@ -1,6 +1,6 @@
 import sys
 import csv_parser
-from enrollmentrecord import EnrollmentRecord
+from enrollment_record import EnrollmentRecord
 from university import University
 
 def print_menu_v2():
@@ -110,7 +110,7 @@ Show course waitlist and roster? (y/n)
 
 def edit_course_info(course):
     menu = f"""
-[Edit options for course {course.course_id}]
+[Edit options for course {course.course_code}]
 a: Enroll student
 b: Drop student
 q: exit
@@ -130,10 +130,10 @@ q: exit
         case "b":
             if student := university.get_student(
                     input(
-                        "Enter student ID to enroll. "
+                        "Enter student ID to drop. "
                     )
             ):
-                course.drop(student)
+                course.drop(student.student_id)
         case _:
             return
 
@@ -141,22 +141,24 @@ q: exit
     edit_course_info(course)
 
 def format_waitlist(course):
-    output_string = "Waitlist: "
+    output_string = "Waitlist: \n"
     for i in course.waitlist.peek_all():
-        output_string += f", {i.student_id} ({i.name})"
-    return output_string
+        output_string += f"{i.student_id} ({i.name})\n"
+    return output_string + "\n"
 
 def format_student_list(list_enrollments: list[EnrollmentRecord]):
-    output_string = ""
+    output_string = "Roster: \n"
     for i in list_enrollments:
-        output_string += f"{i.get_property("id"): {i.get_property("name")} Enrolled {i.get_property("date")}}"
+        output_string += f"{i.get_property("id")}: {i.get_property("name")} Enrolled {i.get_property("date")}\n"
     return output_string
 
+# python main.py .\csv_files\course_catalog.csv .\csv_files\university_data.csv .\csv_files\enrollments_CSE10.csv .\csv_files\course_catalog_CSE10_with_capacity.csv
+
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 5:
         raise ValueError(
-            "Incorrect number of command-line arguments passed to script. Please provide two .csv_files files: a .csv_files file with "
-            "course data and .csv_files file with university/student data."
+            "Incorrect number of command-line arguments passed to script. Please provide:\n"
+            "1: course catalog, 2: student data, 3: university data (enrollments_CSE10), 4: course catalog with capacity.\n"
         )
     course_cat = sys.argv[1]
     student_data = sys.argv[2]

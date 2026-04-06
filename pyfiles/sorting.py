@@ -1,4 +1,4 @@
-from enrollmentrecord import EnrollmentRecord
+from enrollment_record import EnrollmentRecord
 
 def is_sorted(l):
     for i in range(len(l)-1):
