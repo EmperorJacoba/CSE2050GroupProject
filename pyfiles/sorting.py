@@ -1,12 +1,27 @@
 from enrollment_record import EnrollmentRecord
 
 def is_sorted(l):
+    """
+    Takes a list and checks if the list is sorted or not
+    :param l:
+    :return:
+
+    Created by Justin Elak
+    """
     for i in range(len(l)-1):
         if l[i] > l[i+1]:
             return False
     return True
 
 def bubble(L: list[EnrollmentRecord], property: str) -> list[EnrollmentRecord]:
+    """
+    Takes a list of EnrollmentRecord's and sorts it by the given property with bubble sort algorithm
+    :param L:
+    :param property:
+    :return:
+
+    Created by Justin Elak
+    """
     for increment in range(len(L)):
         swapped = False
         for y in range(len(L) - 1 - increment):
@@ -19,6 +34,14 @@ def bubble(L: list[EnrollmentRecord], property: str) -> list[EnrollmentRecord]:
     return L
 
 def insertion(L: list[EnrollmentRecord], property: str) -> list[EnrollmentRecord]:
+    """
+    Takes a list of EnrollmentRecord's and sorts it by the given property with insertion sort algorithm
+    :param L:
+    :param property:
+    :return:
+
+    Created by Justin Elak
+    """
     for i in range(len(L)):
         for j in range(len(L) - i, len(L)):
             if L[j - 1].get_property(property) > L[j].get_property(property):
@@ -28,6 +51,13 @@ def insertion(L: list[EnrollmentRecord], property: str) -> list[EnrollmentRecord
     return L
 
 def get_algorithm_method(algorithm_type: str):
+    """
+    Takes algorithm type and returns the corresponding sorting algorithm
+    :param algorithm_type:
+    :return:
+
+    Created by Jacob Russel
+    """
     match algorithm_type:
         case "insertion":
             return insertion
