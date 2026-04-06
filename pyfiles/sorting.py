@@ -1,11 +1,5 @@
 from enrollment_record import EnrollmentRecord
 
-def is_sorted(l):
-    for i in range(len(l)-1):
-        if l[i] > l[i+1]:
-            return False
-    return True
-
 def bubble(L: list[EnrollmentRecord], property: str) -> list[EnrollmentRecord]:
     for increment in range(len(L)):
         swapped = False
@@ -35,10 +29,3 @@ def get_algorithm_method(algorithm_type: str):
             return bubble
         case _:
             raise ValueError("Invalid sorting algorithm type")
-
-
-if __name__ == "__main__":
-    testarr = [25,67,1,6,2,3,4,5,10,125,5,6,7,7,1024]
-    insertion(testarr)
-    print(testarr)
-    print(is_sorted(testarr))

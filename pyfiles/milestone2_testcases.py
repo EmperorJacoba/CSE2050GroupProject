@@ -7,18 +7,33 @@ from university import University
 
 class TestLinkedQueue(unittest.TestCase):
     def setUp(self):
+        """
+        Init a linked queue with three elements (1-3 in order)
+
+        Created by Jacob Russell
+        """
         self.queue = LinkedQueue()
         self.queue.enqueue(1)
         self.queue.enqueue(2)
         self.queue.enqueue(3)
 
     def test_pop(self):
+        """
+        Test that items are dequeued in the correct order and that any extra dequeues cause an index error.
+
+        Created by Jacob Russell
+        """
         self.assertEqual(self.queue.dequeue(), 1)
         self.assertEqual(self.queue.dequeue(), 2)
         self.assertEqual(self.queue.dequeue(), 3)
         self.assertRaises(IndexError, self.queue.dequeue)
 
     def test_len(self):
+        """
+        Ensure that length of the queue is properly updated.
+
+        Created by Jacob Russell
+        """
         self.assertEqual(len(self.queue), 3)
         self.queue.dequeue()
         self.assertEqual(len(self.queue), 2)
@@ -47,11 +62,17 @@ def make_dummy_course(grade_list: list[Grade]) -> Course:
 
 class TestCourseMilestone2Features(unittest.TestCase):
     def setUp(self):
+        """
+        Set up a course and three students for milestone 2 functionality testing.
+
+        Created by Jacob Russell
+        """
         self.capacity = 3
         self.credits = 3
         self.course_test = Course("TEST1100", self.credits, capacity=self.capacity)
 
-        # Sorting orders
+        # Sorting orders - different orders for each field to ensure each sorting category works
+        # Used in test_sort_id()
         # ID: 1,2,3
         # Name: 2,3,1
         # Date: 3,2,1
@@ -64,6 +85,11 @@ class TestCourseMilestone2Features(unittest.TestCase):
         self.course_test.request_enroll(self.student3, enroll_date=datetime.date(2000, 1, 1))
 
     def test_init(self):
+        """
+        Tests that all fields in setUp were initialized properly
+
+        Created by Jacob Russell
+        """
         self.assertEqual(self.course_test.course_code, "TEST1100")
         self.assertEqual(self.course_test.credits, self.credits)
 
@@ -73,6 +99,14 @@ class TestCourseMilestone2Features(unittest.TestCase):
         self.assertEqual(self.course_test.capacity, self.capacity)
 
     def test_sort_id(self):
+        """
+        Tests that students set up can be sorted by the three required fields: id, name, and data.
+        id: 1,2,3
+        name: 2,3,1
+        date: 3,2,1
+
+        Created by Jacob Russell
+        """
         self.course_test.sort_enrolled("id", "insertion")
         self.assertEqual(self.course_test.enrolled_sorted_by, "id")
         self.assertEqual(self.course_test.get_student_list(), [self.student1, self.student2, self.student3])
@@ -86,10 +120,22 @@ class TestCourseMilestone2Features(unittest.TestCase):
         self.assertEqual(self.course_test.get_student_list(), [self.student3, self.student2, self.student1])
 
     def test_duplicate_enroll(self):
+        """
+        Test that a enrolling the same student twice doesn't do anything.
+
+        Created by Jacob Russell
+        """
         self.course_test.request_enroll(self.student1)
         self.assertEqual(len(self.course_test.get_student_list()), self.capacity)
 
     def test_drop_and_waitlist(self):
+        """
+        Test the drop and waitlist functionality of a course.
+
+        Created by Jacob Russell
+        """
+
+
         # init students for waiting
         student4 = Student("STU00004", "Darryl")
         student5 = Student("STU00005", "Eclair")
@@ -129,6 +175,11 @@ class TestCourseMilestone2Features(unittest.TestCase):
         )
 
     def test_binary_search(self):
+        """
+        Test binary search alg: -1 if not found, index if found
+
+        Created by Jacob Russell
+        """
         # Unassigned student ID
         self.assertEqual(self.course_test.sort_and_find_student_index("STU00005"), -1)
 
@@ -173,29 +224,55 @@ class TestCourseMilestone2Features(unittest.TestCase):
 
 class TestStudentMilestone2(unittest.TestCase):
     def setUp(self):
+        """
+        Init a student and make two courses.
+
+        Created by Jacob Russell
+        """
         self.student = Student("STU10000", "Alex")
         self.course1 = Course("MATH 1132Q", 4)
         self.course2 = Course("EPSY 1100", 4)
 
     def test_init(self):
+        """
+        Check that all fields specified in setUp were properly initialized.
+
+        Created by Jacob Russell
+        """
         self.assertEqual(self.student.student_id,"STU10000")
         self.assertEqual(self.student.name, "Alex")
         self.assertEqual(self.student.courses, {})
 
     def test_enroll(self):
+        """
+        Do both the student and course reflect a student enrollment?
+
+        Created by Jacob Russell
+        """
         self.student.enroll(self.course1, Grade("A"))
         self.assertEqual(self.student.courses, {self.course1 : Grade("A")})
         self.assertEqual(self.course1.get_student_list(), [self.student])
 
     def test_calculate_gpa(self):
+        """
+        Test that student GPA calculations properly reflects the GPA formula.
+
+        Created by Jacob Russell
+        """
         self.student.enroll(self.course1, Grade("A"))
         self.student.enroll(self.course2, Grade("B+"))
 
+        # GPA formula
         expected_gpa = (4*4 + 4*3.3) / 8
 
         self.assertEqual(self.student.calculate_gpa(), expected_gpa)
 
     def test_get_course_info(self):
+        """
+        Confirm that printing student info reflects student enrollments.
+
+        Created by Jacob Russell
+        """
         self.student.enroll(self.course1, Grade("A"))
         self.assertEqual(self.student.get_course_info().split("\n")[1], "Course: MATH 1132Q, Credits: 4, Grade: A")
 
