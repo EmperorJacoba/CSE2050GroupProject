@@ -53,6 +53,14 @@ def read_uni_data(uni: University, path: str) -> None:
                 student.enroll(uni.get_course(course), Grade(grades[course]))
 
 def read_course_capacity_data(uni: University, path: str):
+    """
+    Takes a university object and a path to capacity data CSV and updates course capacity information
+    :param uni:
+    :param path:
+    :return:
+
+    Created by Justin Elak
+    """
     with open(path, "r", newline='') as csvfile:
         csvreader = csv.DictReader(csvfile)
         for row in csvreader:
@@ -63,6 +71,14 @@ def read_course_capacity_data(uni: University, path: str):
             uni.add_course(course_code, course_credits, course_capacity)
 
 def read_enrollment_data(uni: University, path: str):
+    """
+    Takes a university object and a path to enrollment data CSV and updates student and course information
+    :param uni:
+    :param path:
+    :return:
+
+    Created by Justin Elak
+    """
     with open(path, "r", newline='') as csvfile:
         csvreader = csv.DictReader(csvfile)
         for row in csvreader:
