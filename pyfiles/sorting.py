@@ -1,18 +1,5 @@
 from enrollment_record import EnrollmentRecord
 
-def is_sorted(l):
-    """
-    Takes a list and checks if the list is sorted or not
-    :param l:
-    :return:
-
-    Created by Justin Elak
-    """
-    for i in range(len(l)-1):
-        if l[i] > l[i+1]:
-            return False
-    return True
-
 def bubble(L: list[EnrollmentRecord], property: str) -> list[EnrollmentRecord]:
     """
     Takes a list of EnrollmentRecord's and sorts it by the given property with bubble sort algorithm
@@ -65,10 +52,3 @@ def get_algorithm_method(algorithm_type: str):
             return bubble
         case _:
             raise ValueError("Invalid sorting algorithm type")
-
-
-if __name__ == "__main__":
-    testarr = [25,67,1,6,2,3,4,5,10,125,5,6,7,7,1024]
-    insertion(testarr)
-    print(testarr)
-    print(is_sorted(testarr))
