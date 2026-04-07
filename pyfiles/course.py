@@ -10,7 +10,10 @@ class Course:
     A representation of a course at a university.\n
     Member variables:\n
     course_code: The course ID for this course. (e.g. "CSE 1010", "UNIV 1784", "MATH 1132Q")\n
-    students: A list of Students enrolled in this course.
+    credits: Credit value of this course
+    enrollments: A list of EnrollmentRecords, with students in this course and their enrollment times.\n
+    capacity: Maximum number of students allowed to be enrolled in this course
+    waitlist: The queue of students waiting to be auto-enrolled upon an enrolled student dropping.
     """
 
     def __init__(
@@ -48,11 +51,20 @@ class Course:
             grade: Grade = Grade("F"),
             enroll_date: datetime.date = datetime.date.today()
     ) -> bool:
+        """
+        Public method to enroll a student. Adds a student if there is capacity, puts the student on the waitlist if full.
+        :param student: The student object to enroll.
+        :param grade: The grade of the student in this course.
+        :param enroll_date: Enrollment date for this student
+        :return: Was the student successfully enrolled? i.e Are they not on the waitlist?
+        """
 
+        # Prevent duplicates on waitlist              # waitlist needed at all?
         if student not in self.get_student_list() and len(self.enrollments) >= self.capacity:
             self.waitlist.enqueue(student)
             return False
         else:
+            # Good to go. Normal add student pipeline can commence.
             self._add_student(student, grade=grade, enroll_date=enroll_date)
             return True
 
@@ -78,16 +90,37 @@ class Course:
             student.update_grade(self, grade)
 
     def sort_enrolled(self, by: str, algorithm: str):
+        """
+        Sort the student roster by a specified method.
+        :param by: Sort by: "id", "date", "name"
+        :param algorithm: "insertion" or "bubble"
+
+        Created by Jacob Russell
+        """
         self.enrollments = sorting.get_algorithm_method(algorithm)(self.enrollments, by)
         self.enrolled_sorted_by = by
 
-    def get_student_enrollment_data(self, student_id):
+    def get_student_enrollment_data(self, student_id: str) -> EnrollmentRecord:
+        """
+        Get the enrollment data of an enrolled student in this course. Raises ValueError if the student is not enrolled.
+        :param student_id: The student ID of the requested student
+        :return: The EnrollmentRecord of the student
+
+        Created by Justin Elak
+        """
         index = self.sort_and_find_student_index(student_id)
         if index < 0:
             raise ValueError(f"No student with ID {student_id} is enrolled in this course.")
         return self.enrollments[index]
 
-    def sort_and_find_student_index(self, student_id):
+    def sort_and_find_student_index(self, student_id: str) -> int:
+        """
+        Sort the enrollments by student ID and return the index of a given student.
+        :param student_id: The student to find
+        :return: The index of the student in the newly sorted list.
+
+        Created by Justin Elak
+        """
         def recursive_binary_search(records, target_id, low=None, high=None) -> int:
             if low is None or high is None:
                 low, high = 0, len(records) - 1
@@ -109,6 +142,13 @@ class Course:
         return recursive_binary_search(self.enrollments, student_id)
 
     def drop(self, student_id: str, enroll_date_for_replacement: datetime.date = None):
+        """
+        Remove a student from this course and enroll a student from the waitlist if applicable.
+        :param student_id: The student to remove from the course.
+        :param enroll_date_for_replacement: The enrollment date for the student taken off the waitlist.
+
+        Created by Justin Elak
+        """
         index = self.sort_and_find_student_index(student_id)
 
         if index == -1:
@@ -123,6 +163,7 @@ class Course:
     # <editor-fold desc="Statistics">
 
     def get_student_list(self) -> list[Student]:
+        """Get a list of all students enrolled in this course."""
         return [item.student for item in self.enrollments]
 
     def get_student_count(self) -> int:

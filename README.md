@@ -9,7 +9,7 @@ Given CSV files are in pyfiles/csv_files for simplicity when testing python scri
 
 ### Sample command in /pyfiles (windows):
 
-python main.py .\csv_files\course_catalog.csv .\csv_files\university_data.csv .\csv_files\enrollments_CSE10.csv .\csv_files\course_catalog_CSE10_with_capacity.csv
+`python main.py .\csv_files\course_catalog.csv .\csv_files\university_data.csv .\csv_files\enrollments_CSE10.csv .\csv_files\course_catalog_CSE10_with_capacity.csv`
 
 ### Test cases
 

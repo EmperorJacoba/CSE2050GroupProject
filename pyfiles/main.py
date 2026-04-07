@@ -45,6 +45,12 @@ def prompt():
     prompt()
 
 def print_student_data_filter(student_id):
+    """
+    Convert a student ID to a Student object to print data.
+    :param student_id: The student ID to get data for.
+
+    Created by Jacob Russell
+    """
     if student := university.get_student(student_id):
         print_student_data(student)
     else:
@@ -53,6 +59,12 @@ def print_student_data_filter(student_id):
     input("Hit enter to exit back to menu.")
 
 def print_student_data(student):
+    """
+    Print common student data from a Student object
+    :param student: The Student object in question.
+
+    Created by Jacob Russell
+    """
     data_formatted = f"""
 Student {student.student_id}. ({student.name}):
 GPA: {student.calculate_gpa()}
@@ -63,9 +75,48 @@ Enrolled courses:
     print(data_formatted)
 
 def add_student_data():
-    pass
+    """
+    Prompt user to add new student data.
+
+    Created by Jacob Russell
+    """
+
+    print("Add new student:\n")
+
+    name = input("Student name: ")
+    id = prompt_id()
+
+    university.add_student(id, name)
+    print(f"Successfully created new student \"{name}\" (ID: {id})")
+    input("Hit enter to exist back to menu.")
+
+def prompt_id() -> str:
+    """
+    Prompt ID creation according to STUXXXXX guidelines.
+    :return: The user-created student ID.
+    """
+    print("Assign student ID. Student ID must not already exist and be STU followed by five characters.\n"
+          "(STU will be added for you)")
+    id = input("STU")
+    formatted_id = "STU" + id
+
+    if len(id) != 5:
+        print("Invalid ID. Wrong number of characters.")
+        return prompt_id()
+
+    if formatted_id in university.students.keys():
+        print("ID already exists in the university. Please give a new id.")
+        return prompt_id()
+
+    return formatted_id
 
 def print_course_data_filter(course_id):
+    """
+    Convert course ID to Course object to print data.
+    :param course_id: The ID of the course object that data is requested from.
+
+    Created by Jacob Russell
+    """
     if course := university.get_course(course_id):
         print_course_data(course)
     else:
@@ -74,6 +125,12 @@ def print_course_data_filter(course_id):
     input("Hit enter to exit back to menu.")
 
 def print_course_data(course):
+    """
+    Print common data about a course, and optionally sort and edit the course.
+    :param course: The Course object in question.
+
+    Created by Jacob Russell
+    """
     data_formatted = f"""
 Course {course.course_code}. {course.credits} credits.
 Capacity: {course.capacity}. Number of students on waitlist: {len(course.waitlist)}
@@ -109,6 +166,12 @@ Show course waitlist and roster? (y/n)
         edit_course_info(course)
 
 def edit_course_info(course):
+    """
+    Provide user options to add or drop a student from a course.
+    :param course: The Course object in question.
+
+    Created by Jacob Russell
+    """
     menu = f"""
 [Edit options for course {course.course_code}]
 a: Enroll student
@@ -141,12 +204,24 @@ q: exit
     edit_course_info(course)
 
 def format_waitlist(course):
+    """
+    Format waitlist for a course as ID (name).
+    :param course: The course object to get the waitlist from.
+
+    Created by Jacob Russell
+    """
     output_string = "Waitlist: \n"
     for i in course.waitlist.peek_all():
         output_string += f"{i.student_id} ({i.name})\n"
     return output_string + "\n"
 
 def format_student_list(list_enrollments: list[EnrollmentRecord]):
+    """
+    Format the enrolled student data from a list of EnrollmentRecords.
+    :param list_enrollments: list of EnrollmentRecords
+
+    Created by Jacob Russell
+    """
     output_string = "Roster: \n"
     for i in list_enrollments:
         output_string += f"{i.get_property("id")}: {i.get_property("name")} Enrolled {i.get_property("date")}\n"

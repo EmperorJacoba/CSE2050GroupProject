@@ -206,6 +206,13 @@ class Student:
             self.force_enroll(course, grade)
 
     def force_enroll(self, course, grade: Grade):
+        """
+        Exists for COURSE OBJECTS ONLY. Forces update of student course directory.
+        :param course: Course object to force enroll in.
+        :param grade: Grade of the student in that course.
+
+        Created by Jacob Russell
+        """
         self.courses[course] = grade
 
     def update_grade(self, course, grade: Grade) -> None:
