@@ -1,7 +1,8 @@
 import datetime
+from student import Student
 
 class EnrollmentRecord:
-    def __init__(self, student: "Student", enroll_date: datetime.date = None):
+    def __init__(self, student: Student, enroll_date: datetime.date = None):
         self.student = student
 
         if not enroll_date:
@@ -18,7 +19,7 @@ class EnrollmentRecord:
             case "date":
                 return self.enroll_date
             case _:
-                raise ValueError(f"Invalid sorting method, {type}")
+                raise ValueError(f"Invalid sorting method, \"{type}\" is not a supported property.")
 
     def __str__(self):
         return f"{self.student}, enroll time: {self.enroll_date}"

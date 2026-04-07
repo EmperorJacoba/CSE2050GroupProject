@@ -1,15 +1,20 @@
 class Node:
     """
-    Node class for linked list
+    Node class for linked list. Contains item and a link to the next node.
 
     Created by Justin Elak
     """
-    def __init__(self, item, next = None):
-        self.item = item
+    def __init__(self, data, next = None):
+        self.data = data
         self.next = next
 
 class LinkedList:
-    def __init__(self, items = None):
+    def __init__(self, items: list | None = None):
+        """
+        Initialize a new linked list, optionally with a list of items to preload.
+
+        Created by Justin Elak
+        """
         self._len = 0
         self._head = None
         self._tail = None
@@ -20,27 +25,30 @@ class LinkedList:
 
     def get_tail(self):
         """
-        Returns the tail of the linked list
-        :return:
+        Returns the tail of the linked list.
+
+        Created by Justin Elak
         """
         if not self._tail:
             raise IndexError("Cannot get tail from empty list")
-        return self._tail.item
+        return self._tail.data
 
     def get_head(self):
         """
-        Returns the head of the linked list
-        :return:
+        Returns the head of the linked list.
+
+        Created by Justin Elak
         """
         if not self._head:
             raise IndexError("Cannot get head from empty list")
-        return self._head.item
+        return self._head.data
 
     def add_last(self, item):
         """
-        Adds a new item to the end of the linked list
-        :param item:
-        :return:
+        Adds a new item to the end of the linked list.
+        :param item: The item to add.
+
+        Created by Justin Elak
         """
         if self._len == 0:
             node = Node(item)
@@ -54,9 +62,10 @@ class LinkedList:
 
     def add_first(self, item):
         """
-        Adds a new item to the beginning of the linked list
-        :param item:
-        :return:
+        Adds a new item to the beginning of the linked list.
+        :param item: The item to add.
+
+        Created by Justin Elak
         """
         if self._len == 0:
             node = Node(item)
@@ -69,13 +78,14 @@ class LinkedList:
 
     def remove_first(self):
         """
-        Removes an item from the beginning of the linked list and returns the removed item
-        :return:
+        Removes an item from the beginning of the linked list and returns the removed item.
+
+        Created by Justin Elak
         """
         if self._len == 0:
             raise IndexError("Cannot remove from an empty list")
         
-        removed = self._head.item
+        removed = self._head.data
         
         if self._len == 1:
             self._tail = None
@@ -89,13 +99,14 @@ class LinkedList:
 
     def remove_last(self):
         """
-        Removes an item from the end of the linked list and returns the removed item
-        :return:
+        Removes an item from the end of the linked list and returns the removed item.
+
+        Created by Justin Elak
         """
         if self._len == 0:
             raise IndexError("Cannot remove from an empty list")
         
-        removed = self._tail.item
+        removed = self._tail.data
         
         if self._len == 1:
             self._tail = None
@@ -112,64 +123,88 @@ class LinkedList:
         
 
     def __len__(self):
+        """
+        Returns current held value for the number of nodes in the linked list.
+
+        Created by Justin Elak
+        """
         return self._len
 
 class LinkedQueue:
-    """Implements a Queue using a linked list"""
+    """
+    Implements a Queue using a linked list.
+    """
+
     def __init__(self):
+        """
+        Create an empty Queue with a linked list backing.
+
+        Created by Justin Elak
+        """
         self._list = LinkedList()
         self._len = 0
     
     def enqueue(self, item):
         """
         Adds a new item to the end of the queue
-        :param item:
-        :return:
+        :param item: The item to add.
+
+        Created by Justin Elak
         """
         self._list.add_last(item)
         self._len += 1
 
     def dequeue(self):
         """
-        Removes and returns the first item from the queue
-        :return:
+        Removes and returns the first item in the queue.
+        :return: The first item in the queue.
+
+        Created by Justin Elak
         """
         if self._len == 0:
-            raise IndexError("Cannot remove from an empty queue")
+            raise ValueError("Cannot remove from an empty queue.")
         removed = self._list.remove_first()
         self._len -= 1
         return removed
         
     def peek(self):
         """
-        Returns the first item from the queue
-        :return:
+        Returns the first item from the queue. Does not remove the item.
+
+        Created by Justin Elak
         """
         if self._len == 0:
-            raise IndexError("Cannot peek into an empty queue")
+            raise ValueError("Cannot peek into an empty queue.")
         return self._list.get_head()
 
     def peek_all(self) -> list:
         """
-        Returns a list of all items in the queue
-        :return:
+        Returns a list of all items in the queue. Does not remove any items.
+
+        Created by Justin Elak
         """
         if len(self) == 0: return []
 
         list = []
         node = self._list._head
         while node:
-            list.append(node.item)
+            list.append(node.data)
             node = node.next
 
         return list
     
     def is_empty(self):
         """
-        Returns a boolean indicating if the queue is empty
-        :return:
+        Is the queue empty?
+
+        Created by Justin Elak
         """
         return self._len == 0
 
     def __len__(self):
+        """
+        Returns the calculated count of all items in the queue.
+
+        Created by Justin Elak
+        """
         return self._len

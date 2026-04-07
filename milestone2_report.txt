@@ -1,14 +1,14 @@
-The time complexity of LinkedQueue.enqueue is O(1) because linking a new node to a singularly linked list is an
+The time complexity of LinkedQueue.enqueue is O(1) because linking a new node to a linked list is an
 O(1) operation, which is the underlying operation of enqueue.
 
-The time complexity of LinkedQueue.dequeue is O(1) because unlinking the first element of a new node in a singularly
+The time complexity of LinkedQueue.dequeue is O(1) because unlinking the first element of a new node in a
 linked list is also an O(1) operation.
 
-The time complexity of both insertion sort and bubble sort is O(n2), because in the worst case
+The time complexity of both insertion sort and bubble sort is O(n^2), because in the worst case
 (when the list is sorted in the descending order), each for loop will have to execute fully,
 and each for loop depends on n for both sorting algorithms.
 
-The time complexity for recursive binary search is O(logn) because the list is divided in half log2(n) times on average.
+The time complexity for recursive binary search is O(logn) because the list is divided in half log(base2)(n) times on average.
 The list must be sorted because the binary search algorithm is dependent on the list being sorted (the list divisions
 based on value being greater or lower do not work nor make sense if the list is unsorted).
 

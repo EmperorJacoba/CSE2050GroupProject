@@ -2,10 +2,10 @@ from enrollment_record import EnrollmentRecord
 
 def bubble(L: list[EnrollmentRecord], property: str) -> list[EnrollmentRecord]:
     """
-    Takes a list of EnrollmentRecord's and sorts it by the given property with bubble sort algorithm
-    :param L:
-    :param property:
-    :return:
+    Takes a list of EnrollmentRecords and sorts it by the given property with bubble sort algorithm.
+    :param L: list[EnrollmentRecord]
+    :param property: EnrollmentRecord property to sort by ("name", "id", "date")
+    :return: Sorted L
 
     Created by Justin Elak
     """
@@ -22,10 +22,10 @@ def bubble(L: list[EnrollmentRecord], property: str) -> list[EnrollmentRecord]:
 
 def insertion(L: list[EnrollmentRecord], property: str) -> list[EnrollmentRecord]:
     """
-    Takes a list of EnrollmentRecord's and sorts it by the given property with insertion sort algorithm
-    :param L:
-    :param property:
-    :return:
+    Takes a list of EnrollmentRecords and sorts it by the given property with insertion sort algorithm.
+    :param L: list[EnrollmentRecord]
+    :param property: EnrollmentRecord property to sort by ("name", "id", "date")
+    :return: Sorted L
 
     Created by Justin Elak
     """
@@ -40,10 +40,11 @@ def insertion(L: list[EnrollmentRecord], property: str) -> list[EnrollmentRecord
 def get_algorithm_method(algorithm_type: str):
     """
     Takes algorithm type and returns the corresponding sorting algorithm
-    :param algorithm_type:
-    :return:
+    :param algorithm_type: "bubble" or "insertion"
+    :return: Sorting algorithm function. Call with <algorithm>(list[EnrollmentRecord], <property>),
+    where property is an EnrollmentRecord property ("name", "id", "date")
 
-    Created by Jacob Russel
+    Created by Jacob Russell
     """
     match algorithm_type:
         case "insertion":

@@ -45,6 +45,12 @@ class Course:
         else:
             self.enrollments = []
 
+    def __contains__(self, item: Student):
+        return self.sort_and_find_student_index(item.student_id) != -1
+
+    def is_course_full(self) -> bool:
+        return len(self.enrollments) >= self.capacity
+
     def request_enroll(
             self,
             student: Student,
@@ -59,12 +65,14 @@ class Course:
         :return: Was the student successfully enrolled? i.e Are they not on the waitlist?
         """
 
-        # Prevent duplicates on waitlist              # waitlist needed at all?
-        if student not in self.get_student_list() and len(self.enrollments) >= self.capacity:
+        # Prevent duplicates on the waitlist/general enrolling
+                               # waitlist needed at all?
+        if student not in self and self.is_course_full():
             self.waitlist.enqueue(student)
             return False
         else:
             # Good to go. Normal add student pipeline can commence.
+            # If the student is a duplicate, this method handles it.
             self._add_student(student, grade=grade, enroll_date=enroll_date)
             return True
 
@@ -83,7 +91,7 @@ class Course:
         Created by Jacob Russell
         """
 
-        if self.sort_and_find_student_index(student.student_id) == -1: # Student DNE
+        if student not in self:
             self.enrollments.append(EnrollmentRecord(student, enroll_date))
             student.force_enroll(self, grade)
         else:
@@ -115,13 +123,19 @@ class Course:
 
     def sort_and_find_student_index(self, student_id: str) -> int:
         """
-        Sort the enrollments by student ID and return the index of a given student.
+        Sort the enrollments by student ID and return the index of a given student. Returns -1 if the student ID is not
+        enrolled in this course.
         :param student_id: The student to find
         :return: The index of the student in the newly sorted list.
 
         Created by Justin Elak
         """
-        def recursive_binary_search(records, target_id, low=None, high=None) -> int:
+        def recursive_binary_search(
+                records: list[EnrollmentRecord],
+                target_id: str,
+                low = None, # set by recursive calls
+                high = None # set by recursive calls
+        ) -> int:
             if low is None or high is None:
                 low, high = 0, len(records) - 1
             if low > high:
@@ -141,7 +155,11 @@ class Course:
 
         return recursive_binary_search(self.enrollments, student_id)
 
-    def drop(self, student_id: str, enroll_date_for_replacement: datetime.date = None):
+    def drop(
+            self,
+            student_id: str,
+            enroll_date_for_replacement: datetime.date = datetime.date.today()
+    ):
         """
         Remove a student from this course and enroll a student from the waitlist if applicable.
         :param student_id: The student to remove from the course.

@@ -26,7 +26,7 @@ class TestLinkedQueue(unittest.TestCase):
         self.assertEqual(self.queue.dequeue(), 1)
         self.assertEqual(self.queue.dequeue(), 2)
         self.assertEqual(self.queue.dequeue(), 3)
-        self.assertRaises(IndexError, self.queue.dequeue)
+        self.assertRaises(ValueError, self.queue.dequeue)
 
     def test_len(self):
         """
@@ -135,7 +135,6 @@ class TestCourseMilestone2Features(unittest.TestCase):
         Created by Jacob Russell
         """
 
-
         # init students for waiting
         student4 = Student("STU00004", "Darryl")
         student5 = Student("STU00005", "Eclair")
@@ -180,11 +179,17 @@ class TestCourseMilestone2Features(unittest.TestCase):
 
         Created by Jacob Russell
         """
-        # Unassigned student ID
+        # Unassigned student ID (should be not found)
         self.assertEqual(self.course_test.sort_and_find_student_index("STU00005"), -1)
 
         # Assigned student ID. First one added (self.student1)
         self.assertEqual(self.course_test.sort_and_find_student_index("STU00001"), 0)
+
+        # middle
+        self.assertEqual(self.course_test.sort_and_find_student_index("STU00002"), 1)
+
+        # last
+        self.assertEqual(self.course_test.sort_and_find_student_index("STU00003"), 2)
 
     def test_get_mode(self):
         """

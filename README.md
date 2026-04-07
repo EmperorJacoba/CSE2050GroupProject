@@ -4,6 +4,8 @@
 All python files are contained in /pyfiles. To run the main program (parse and display student/course data), run the script main.py
 in /pyfiles with four command line arguments. 1: course catalog, 2: student data, 3: university data (enrollments_CSE10), 4: course catalog with capacity.
 
+> The requested/recommended demo_milestone2.py file is implemented via main.py
+
 CSV file format is expected in the same format as outlined in the PDF specifications document. 
 Given CSV files are in pyfiles/csv_files for simplicity when testing python scripts.
 
