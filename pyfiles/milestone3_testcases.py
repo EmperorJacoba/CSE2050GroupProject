@@ -21,6 +21,12 @@ class TestHashMap(unittest.TestCase):
         with self.assertRaises(KeyError):
             _ = self.hm["bar"]
 
+    def test_collision_handling(self):
+        pass
+
+    def test_rehashing(self):
+        pass
+
     def test_len(self):
         self.assertEqual(0, len(self.hm))
         self.hm[1] = "foo"
@@ -31,19 +37,6 @@ class TestHashMap(unittest.TestCase):
 
         self.hm[2] = "bar"
         self.assertEqual(2, len(self.hm))
-
-class TestHashMap(unittest.TestCase):
-    def setUp(self):
-        pass
-
-    def test_init(self):
-        pass
-
-    def test_collision_handling(self):
-        pass
-
-    def test_rehashing(self):
-        pass
 
 class TestEnrollments(unittest.TestCase):
     def test_check_for_prerequisites(self):
