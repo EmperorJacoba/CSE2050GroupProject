@@ -1,6 +1,7 @@
 import datetime
 
 from enrollment_record import EnrollmentRecord
+from hash import HashMap
 from linked_list import LinkedQueue
 from student import Student, Grade
 import sorting
@@ -15,6 +16,8 @@ class Course:
     capacity: Maximum number of students allowed to be enrolled in this course
     waitlist: The queue of students waiting to be auto-enrolled upon an enrolled student dropping.
     """
+
+    prerequisite: HashMap = None
 
     def __init__(
             self,
@@ -33,6 +36,10 @@ class Course:
         """
         if not course_code:
             raise ValueError("Course code must not be empty.")
+
+        if not Course.prerequisite:
+            raise FileNotFoundError("Prerequisites have not been loaded into the Course class. "
+                                    "Please load prerequisites before constructing courses.")
 
         self.course_code = course_code
         self.credits = credits
@@ -64,6 +71,11 @@ class Course:
         :param enroll_date: Enrollment date for this student
         :return: Was the student successfully enrolled? i.e Are they not on the waitlist?
         """
+
+
+        if Course.prerequisite[self.course_code] not in student.courses:
+            raise PermissionError(f"Student {student.student_id}has not fulfilled prerequisite for course {self.course_code}. "
+                                  f"Student cannot be enrolled.")
 
         # Prevent duplicates on the waitlist/general enrolling
                                # waitlist needed at all?

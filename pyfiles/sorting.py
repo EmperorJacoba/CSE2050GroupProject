@@ -37,6 +37,12 @@ def insertion(L: list[EnrollmentRecord], property: str) -> list[EnrollmentRecord
 
     return L
 
+def merge_sort(L: list[EnrollmentRecord], property: str) -> list[EnrollmentRecord]:
+    raise NotImplementedError("Please implement merge sort.")
+
+def quick_sort(L: list[EnrollmentRecord], property: str) -> list[EnrollmentRecord]:
+    raise NotImplementedError("Please implement quick sort.")
+
 def get_algorithm_method(algorithm_type: str):
     """
     Takes algorithm type and returns the corresponding sorting algorithm
@@ -48,8 +54,14 @@ def get_algorithm_method(algorithm_type: str):
     """
     match algorithm_type:
         case "insertion":
-            return insertion
+            raise DeprecationWarning("Insertion sort is no longer supported for course sorting.")
+            # return insertion
         case "bubble":
-            return bubble
+            raise DeprecationWarning("Bubble sort is no longer supported for course sorting.")
+            # return bubble
+        case "merge":
+            return merge_sort
+        case "quick":
+            return quick_sort
         case _:
             raise ValueError("Invalid sorting algorithm type")
