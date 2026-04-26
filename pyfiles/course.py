@@ -163,7 +163,7 @@ class Course:
                 return recursive_binary_search(records, target_id, mid + 1, high)
 
         if self.enrolled_sorted_by != "id":
-            self.sort_enrolled("id", "insertion")
+            self.sort_enrolled("id", "merge")
 
         return recursive_binary_search(self.enrollments, student_id)
 

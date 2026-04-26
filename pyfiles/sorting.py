@@ -37,16 +37,70 @@ def insertion(L: list[EnrollmentRecord], property: str) -> list[EnrollmentRecord
 
     return L
 
+def _merge(L: list[EnrollmentRecord], L1: list[EnrollmentRecord], L2: list[EnrollmentRecord], property: str):
+    i = 0
+    j = 0
+
+    while len(L1) > i and len(L2) > j:
+        if L1[i].get_property(property) < L2[j].get_property(property):
+            L[i+j] = L1[i]
+            i += 1
+        else:
+            L[i+j] = L2[j]
+            j += 1
+
+    L[i+j:] = L1[i:] + L2[j:]
+
 def merge_sort(L: list[EnrollmentRecord], property: str) -> list[EnrollmentRecord]:
-    raise NotImplementedError("Please implement merge sort.")
+    if len(L) < 2:
+        return L
+
+    mid = len(L) // 2
+    left = L[:mid]
+    right = L[mid:]
+
+    merge_sort(left, property)
+    merge_sort(right, property)
+
+    _merge(L, left, right, property)
+
+    return L
 
 def quick_sort(L: list[EnrollmentRecord], property: str) -> list[EnrollmentRecord]:
-    raise NotImplementedError("Please implement quick sort.")
+    return _quicksort(L, 0, len(L), property)
+
+def _quicksort(L: list[EnrollmentRecord], left, right, property):
+    if right - left <= 1:
+        return L
+
+    pivot = _partition(L, left, right, property)
+
+    _quicksort(L, left, pivot, property)
+    _quicksort(L, pivot+1, right, property)
+
+    return L
+
+def _partition(L: list[EnrollmentRecord], left, right, property):
+    pivot = right - 1
+    right = pivot - 1
+
+    while left < right:
+        while L[left].get_property(property) < L[pivot].get_property(property):
+            left += 1
+        while left < right and L[right].get_property(property) >= L[pivot].get_property(property):
+            right -= 1
+        if left < right:
+            L[left], L[right] = L[right], L[left]
+
+    if L[left].get_property(property) >= L[pivot].get_property(property):
+        L[left], L[pivot] = L[pivot], L[left]
+
+    return left
 
 def get_algorithm_method(algorithm_type: str):
     """
     Takes algorithm type and returns the corresponding sorting algorithm
-    :param algorithm_type: "bubble" or "insertion"
+    :param algorithm_type: "merge" or "quick"
     :return: Sorting algorithm function. Call with <algorithm>(list[EnrollmentRecord], <property>),
     where property is an EnrollmentRecord property ("name", "id", "date")
 

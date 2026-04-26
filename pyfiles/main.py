@@ -158,7 +158,7 @@ Show course waitlist and roster? (y/n)
             if sort not in ["id", "name", "date"]:
                 break
             else:
-                course.sort_enrolled(sort, "insertion")
+                course.sort_enrolled(sort, "merge")
                 print(format_student_list(course.enrollments))
 
     yn = input("Edit course information?")
