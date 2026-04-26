@@ -73,7 +73,7 @@ class Course:
         """
 
 
-        if Course.prerequisite[self.course_code] not in student.courses:
+        if self.course_code in Course.prerequisite and Course.prerequisite[self.course_code] not in student.get_course_ids():
             raise PermissionError(f"Student {student.student_id}has not fulfilled prerequisite for course {self.course_code}. "
                                   f"Student cannot be enrolled.")
 

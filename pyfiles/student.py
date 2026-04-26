@@ -293,6 +293,9 @@ class Student:
 
         return list(self.courses.keys())
 
+    def get_course_ids(self) -> list[str]:
+        return [i.course_code for i in self.courses.keys()]
+
     def get_course_info(self) -> str:
         """
         Generate a summary of this student's enrollments, including course code, grade, and credits. Returns the summary
