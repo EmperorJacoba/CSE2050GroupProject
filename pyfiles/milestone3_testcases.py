@@ -22,19 +22,34 @@ class TestHashMap(unittest.TestCase):
             _ = self.hm["bar"]
 
     def test_collision_handling(self):
-        pass
+        #Both key%4 = 0
+        self.hm = HashMap(size=4)
+        self.hm[0] = "foo"
+        self.hm[4] = "bar"
+
+        self.assertEqual(self.hm[0], "foo")
+        self.assertEqual(self.hm[4], "bar")
 
     def test_rehashing(self):
-        pass
+        self.hm = HashMap(size=4)
+        self.hm[0] = "foo"
+        self.hm[4] = "bar"
+        self.hm[2] = "buzz"
+        #Should rehash after 4th
+        self.hm[6] = "bat"
+
+        #Checks if all data was correctly rehashed
+        self.assertEqual(self.hm[0], "foo")
+        self.assertEqual(self.hm[4], "bar")
+        self.assertEqual(self.hm[2], "buzz")
+        self.assertEqual(self.hm[6], "bat")
 
     def test_len(self):
         self.assertEqual(0, len(self.hm))
         self.hm[1] = "foo"
         self.assertEqual(1, len(self.hm))
-
         self.hm[2] = "buzz"
         self.assertEqual(2, len(self.hm))
-
         self.hm[2] = "bar"
         self.assertEqual(2, len(self.hm))
 
