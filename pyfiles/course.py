@@ -37,7 +37,7 @@ class Course:
         if not course_code:
             raise ValueError("Course code must not be empty.")
 
-        if not Course.prerequisite:
+        if Course.prerequisite is None:
             raise FileNotFoundError("Prerequisites have not been loaded into the Course class. "
                                     "Please load prerequisites before constructing courses.")
 

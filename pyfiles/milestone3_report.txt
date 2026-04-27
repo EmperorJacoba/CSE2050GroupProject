@@ -1,0 +1,9 @@
+HashMap.put() and HashMap.get() both approach O(1) time complexity because hashmap items are added and retrieved with hash() and the mod operator, which are O(1) operations.
+With the values produced by hash() and the modulus, the hashmap is able to access and put values in O(1) average time, providing that there is an even distribution of hash results. 
+This is unlikely, however, as the hashmap rehashes when it exceeds 75% load (aka when the number of items reaches 75% of the number of buckets).
+
+The quicksort algorithm has a O(nlogn) average time complexity, where n is the number of elements in the list, as it divides the list log(n) times and performs an O(n) comparison on each division to sort the list. Quicksort is O(n^2) worst case when the list is sorted, as every item will have to be chosen as the pivot to sort the list. No changes will happen to the list with each pivot selection.
+
+The merge sort algorithm has an O(nlogn) time complexity, where n is the number of elements in the list, as it splits and merges the list a combined log(n) times, and merges each divided sublist in O(n) time during the merge step. 
+
+The merge sort algorithm would be preferred over quicksort for this project, as the inputs are more likely to be in sorted order when attempting to sort (as sorting happens frequently and students are added in order). Quicksort is O(n^2) for sorted inputs whereas merge sort is O(nlogn) for all inputs.

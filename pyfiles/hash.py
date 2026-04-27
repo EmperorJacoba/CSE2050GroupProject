@@ -47,9 +47,15 @@ class HashMap:
         if self._length / self._size > 0.75:
             self._rehash()
 
+    def put(self, key, value):
+        self[key] = value
+
     def __getitem__(self, key):
         bucket = self._buckets[hash(key) % self._size]
         return bucket.get(key)
+
+    def get(self, key):
+        return self[key]
 
     def __len__(self):
         return self._length
