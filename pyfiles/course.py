@@ -19,6 +19,9 @@ class Course:
 
     prerequisite: HashMap = None
 
+    def set_prereqs(self, req_map: HashMap):
+        Course.prerequisite = req_map
+
     def __init__(
             self,
             course_code: str,

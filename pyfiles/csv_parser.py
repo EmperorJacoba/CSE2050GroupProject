@@ -3,7 +3,10 @@
 # "In Student info, courses and grade
 #
 # s are given as a course code1:grade1;course code2:grade2;"
+from http.cookiejar import debug
 
+from pyfiles.course import Course
+from pyfiles.hash import HashMap
 from student import Grade
 from university import University
 import csv
@@ -91,14 +94,37 @@ def read_enrollment_data(uni: University, path: str):
 
             course.request_enroll(student)
 
+def read_prereqs(path: str) -> HashMap:
+    """
+    :param uni:
+    :param path:
+    :return:
+
+    Created by Justin Elak
+    """
+    map = HashMap()
+    with open(path, "r", newline='') as file:
+        next(file)
+        for line in file:
+            line = line.split("\t")
+            for i in range(len(line)):
+                line[i] = line[i].replace("\n","")
+            course = line[0]
+            req_course = line[1]
+
+            if req_course != '':
+                map[course] = req_course
+    return map
+
 if __name__ == "__main__":
     direct = "csv_files/"
     catalog = direct+"course_catalog_CSE10_with_capacity.csv"
     enrollments = direct+"enrollments_CSE10.csv"
     university_data = direct+"university_data.csv"
     course = direct+"course_catalog.csv"
+    prereq = direct+"cse_prerequisites.csv"
 
-    test_university = University()
+    test_university = University(prereqs=read_prereqs(prereq))
     read_course_data(test_university, course)
     read_course_capacity_data(test_university, catalog)
     read_uni_data(test_university, university_data)

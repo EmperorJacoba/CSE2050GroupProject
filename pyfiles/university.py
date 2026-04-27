@@ -1,5 +1,6 @@
 from course import Course
 from student import Student
+from hash import HashMap
 
 class University:
     """
@@ -9,7 +10,7 @@ class University:
     courses: A map of course codes to Course objects.
     """
 
-    def __init__(self, students: dict[str, Student] = None, courses: dict[str, Course] = None):
+    def __init__(self, prereqs: HashMap = None, students: dict[str, Student] = None, courses: dict[str, Course] = None):
         """
         Create a new university, with a student and course directory.
         :param students: Dictionary of students enrolled in this University. Key = Student ID. Value = Student object.
@@ -26,6 +27,11 @@ class University:
             self.courses = courses
         else:
             self.courses = {}
+
+        if prereqs is not None:
+            Course.prerequisite = prereqs
+        else:
+            Course.prerequisite = HashMap()
 
     def add_course(self, course_code: str, credits: int, capacity=255) -> Course:
         """
