@@ -61,6 +61,10 @@ class Course:
     def is_course_full(self) -> bool:
         return len(self.enrollments) >= self.capacity
 
+    def get_prerequisite(self):
+        if self.course_code not in Course.prerequisite: return None
+        return Course.prerequisite[self.course_code]
+
     def request_enroll(
             self,
             student: Student,
@@ -73,12 +77,13 @@ class Course:
         :param grade: The grade of the student in this course.
         :param enroll_date: Enrollment date for this student
         :return: Was the student successfully enrolled? i.e Are they not on the waitlist?
+        :except PermissionError: Raised when student does not meet prerequisites for this course.
         """
 
 
-        if self.course_code in Course.prerequisite and Course.prerequisite[self.course_code] not in student.get_course_ids():
-            raise PermissionError(f"Student {student.student_id}has not fulfilled prerequisite for course {self.course_code}. "
-                                  f"Student cannot be enrolled.")
+        if self.course_code in Course.prerequisite and self.get_prerequisite() not in student.get_course_ids():
+            raise PermissionError(f"Student {student.student_id} has not fulfilled prerequisite {self.get_prerequisite()} for course {self.course_code}. Student cannot be enrolled.")
+
 
         # Prevent duplicates on the waitlist/general enrolling
                                # waitlist needed at all?
@@ -220,6 +225,8 @@ class Course:
             else:
                 count_dictionary[grade] = 1
 
+        if len(count_dictionary) == 0:
+            return 0
         return max(count_dictionary, key=count_dictionary.get)
 
     def get_median_grade_point(self) -> float:

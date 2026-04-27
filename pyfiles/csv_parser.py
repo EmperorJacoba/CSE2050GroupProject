@@ -5,8 +5,8 @@
 # s are given as a course code1:grade1;course code2:grade2;"
 from http.cookiejar import debug
 
-from pyfiles.course import Course
-from pyfiles.hash import HashMap
+from course import Course
+from hash import HashMap
 from student import Grade
 from university import University
 import csv
@@ -46,14 +46,19 @@ def read_uni_data(uni: University, path: str) -> None:
 
             student = uni.add_student(student_id, student_name)
 
-            #Create dict with course and grades
+            # Create dict with course and grades
             for course in courses:
                 course_detail = course.split(":")
                 grades[course_detail[0]] = course_detail[1]
 
-            #Enroll students into course with grade from dict
-            for course in grades:
-                student.enroll(uni.get_course(course), Grade(grades[course]))
+            # Enroll students into course with grade from dict
+            # Sorted so that prerequisite collisions are minimal
+            for course in sorted(grades):
+                try:
+                    student.enroll(uni.get_course(course), Grade(grades[course]))
+                except PermissionError:
+                    continue
+                    # print(f"Skipped {course} as student did not meet prerequsites.")
 
 def read_course_capacity_data(uni: University, path: str):
     """
@@ -92,13 +97,16 @@ def read_enrollment_data(uni: University, path: str):
             if not course:
                 raise ValueError("Course does not exist")
 
-            course.request_enroll(student)
+            try:
+                course.request_enroll(student)
+            except PermissionError:
+                continue
+                #print(f"Skipped {course.course_code} as student did not meet prerequisites.")
 
 def read_prereqs(path: str) -> HashMap:
     """
-    :param uni:
-    :param path:
-    :return:
+    :param path: Path to cse prerequisites file.
+    :return: Custom HashMap of course prerequisites.
 
     Created by Justin Elak
     """
@@ -110,9 +118,13 @@ def read_prereqs(path: str) -> HashMap:
             for i in range(len(line)):
                 line[i] = line[i].replace("\n","")
             course = line[0]
-            req_course = line[1]
 
-            if req_course != '':
+            # CSV file has \r\n appended at the end of lines which is truthy, for some reason.
+            # Also causes printing errors as \r resets the text cursor to the beginning of the line.
+            req_course = line[1].strip()
+
+            # Strip so that faulty reqs are not added to the dictionary.
+            if req_course:
                 map[course] = req_course
     return map
 

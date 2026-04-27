@@ -5,7 +5,7 @@ from university import University
 
 def print_menu_v2():
     menu = """
-[Options (Milestone 2)]
+[Options (Milestone 3)]
 a: View student data
 b: Add student
 c: View/Edit course data 
@@ -187,9 +187,12 @@ q: exit
                         "Enter student ID to enroll. "
                     )
             ):
-                course.request_enroll(student)
+                try:
+                    course.request_enroll(student)
+                except PermissionError:
+                    print(f"Cannot enroll student as they do not meet the prerequisite {course.get_prerequisite()} for {course.course_code}.")
             else:
-                "Invalid student id."
+                print("Invalid student id.")
         case "b":
             if student := university.get_student(
                     input(
@@ -227,20 +230,21 @@ def format_student_list(list_enrollments: list[EnrollmentRecord]):
         output_string += f"{i.get_property("id")}: {i.get_property("name")} Enrolled {i.get_property("date")}\n"
     return output_string
 
-# python main.py .\csv_files\course_catalog.csv .\csv_files\university_data.csv .\csv_files\enrollments_CSE10.csv .\csv_files\course_catalog_CSE10_with_capacity.csv
+# python main.py .\csv_files\course_catalog.csv .\csv_files\university_data.csv .\csv_files\enrollments_CSE10.csv .\csv_files\course_catalog_CSE10_with_capacity.csv .\csv_files\cse_prerequisites.csv
 
 if __name__ == "__main__":
-    if len(sys.argv) != 5:
+    if len(sys.argv) != 6:
         raise ValueError(
             "Incorrect number of command-line arguments passed to script. Please provide:\n"
-            "1: course catalog, 2: student data, 3: university data (enrollments_CSE10), 4: course catalog with capacity.\n"
+            "1: course catalog, 2: student data, 3: university data (enrollments_CSE10), 4: course catalog with capacity. 5: prerequisites\n"
         )
     course_cat = sys.argv[1]
     student_data = sys.argv[2]
     enrollment_data = sys.argv[3]
     course_cat_cap = sys.argv[4]
+    prerequisites = sys.argv[5]
 
-    university = University()
+    university = University(csv_parser.read_prereqs(prerequisites))
     csv_parser.read_course_data(university, course_cat)
     csv_parser.read_course_capacity_data(university, course_cat_cap)
     csv_parser.read_uni_data(university, student_data)

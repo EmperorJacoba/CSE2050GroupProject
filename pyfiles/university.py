@@ -10,11 +10,19 @@ class University:
     courses: A map of course codes to Course objects.
     """
 
-    def __init__(self, prereqs: HashMap = None, students: dict[str, Student] = None, courses: dict[str, Course] = None):
+    def __init__(self,
+                 prereqs: HashMap = None,
+                 students: dict[str, Student] = None,
+                 courses: dict[str, Course] = None
+                 ):
         """
         Create a new university, with a student and course directory.
         :param students: Dictionary of students enrolled in this University. Key = Student ID. Value = Student object.
         :param courses: Dictionary of courses this University offers. Key = Course Code/ID. Value = Course object
+
+        Note: Assign prerequisites here instead of direct into Course.prerequisites because otherwise external
+        scripts and the University/Course/Student ecosystem will point to different Course templates because of python
+        object handling.
 
         Created by Jacob Russell
         """
