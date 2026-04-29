@@ -90,6 +90,12 @@ class TestHashMap(unittest.TestCase):
 
 class TestEnrollments(unittest.TestCase):
     def test_check_for_prerequisites(self):
+        """
+        Check that a student is rejected when not meeting prereqs and accepted when they do.
+
+        Created by Jacob Russell
+        """
+
         Course.prerequisite = HashMap(size=1)
         Course.prerequisite["TEST2000"] = "TEST1000"
 
@@ -133,6 +139,11 @@ class TestSortingAlgorithms(unittest.TestCase):
         self.course_test.request_enroll(self.student3, enroll_date=datetime.date(2000, 1, 1))
 
     def test_merge_sort(self):
+        """
+        Test merge sort on each method of sorting.
+
+        Created by Jacob Russell
+        """
         self.course_test.sort_enrolled("id", "merge")
         self.assertEqual(self.course_test.enrolled_sorted_by, "id")
         self.assertEqual(self.course_test.get_student_list(), [self.student1, self.student2, self.student3])
@@ -146,6 +157,11 @@ class TestSortingAlgorithms(unittest.TestCase):
         self.assertEqual(self.course_test.get_student_list(), [self.student3, self.student2, self.student1])
 
     def test_quick_sort(self):
+        """
+        Test quick sort on each method of sorting.
+
+        Created by Jacob Russell
+        """
         self.course_test.sort_enrolled("id", "quick")
         self.assertEqual(self.course_test.enrolled_sorted_by, "id")
         self.assertEqual(self.course_test.get_student_list(), [self.student1, self.student2, self.student3])

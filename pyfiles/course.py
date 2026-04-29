@@ -9,6 +9,9 @@ import sorting
 class Course:
     """
     A representation of a course at a university.\n
+    Class variables:\n
+    prerequisite: Access a course's prerequisite with prerequisite[<course code>]. Load in prerequisites before trying to
+    register students, as if prerequisites are not initialized, enrolling students/making courses will be denied.\n
     Member variables:\n
     course_code: The course ID for this course. (e.g. "CSE 1010", "UNIV 1784", "MATH 1132Q")\n
     credits: Credit value of this course
@@ -80,9 +83,13 @@ class Course:
         :except PermissionError: Raised when student does not meet prerequisites for this course.
         """
 
-
+        # Check prereqs
+           # Does this course have a prereq?         # Does the student meet that prerequisite
         if self.course_code in Course.prerequisite and self.get_prerequisite() not in student.get_course_ids():
-            raise PermissionError(f"Student {student.student_id} has not fulfilled prerequisite {self.get_prerequisite()} for course {self.course_code}. Student cannot be enrolled.")
+            raise PermissionError(f"Student {student.student_id} has not fulfilled prerequisite "
+                                  f"{self.get_prerequisite()} for course {self.course_code}. "
+                                  f"Student cannot be enrolled."
+                                  )
 
 
         # Prevent duplicates on the waitlist/general enrolling

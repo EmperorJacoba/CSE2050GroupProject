@@ -38,6 +38,11 @@ def insertion(L: list[EnrollmentRecord], property: str) -> list[EnrollmentRecord
     return L
 
 def _merge(L: list[EnrollmentRecord], L1: list[EnrollmentRecord], L2: list[EnrollmentRecord], property: str):
+    """
+    Internal merge function for merge sort.
+
+    Created by Jacob Russell
+    """
     i = 0
     j = 0
 
@@ -52,6 +57,14 @@ def _merge(L: list[EnrollmentRecord], L1: list[EnrollmentRecord], L2: list[Enrol
     L[i+j:] = L1[i:] + L2[j:]
 
 def merge_sort(L: list[EnrollmentRecord], property: str) -> list[EnrollmentRecord]:
+    """
+    Takes a list of EnrollmentRecords and sorts it by the given property with merge sort algorithm.
+    :param L: list[EnrollmentRecord]
+    :param property: EnrollmentRecord property to sort by ("name", "id", "date")
+    :return: Sorted L
+
+    Created by Jacob Russell
+    """
     if len(L) < 2:
         return L
 
@@ -67,9 +80,22 @@ def merge_sort(L: list[EnrollmentRecord], property: str) -> list[EnrollmentRecor
     return L
 
 def quick_sort(L: list[EnrollmentRecord], property: str) -> list[EnrollmentRecord]:
+    """
+    Takes a list of EnrollmentRecords and sorts it by the given property with quick sort algorithm.
+    :param L: list[EnrollmentRecord]
+    :param property: EnrollmentRecord property to sort by ("name", "id", "date")
+    :return: Sorted L
+
+    Created by Jacob Russell
+    """
     return _quicksort(L, 0, len(L), property)
 
 def _quicksort(L: list[EnrollmentRecord], left, right, property):
+    """
+    Internal quicksort logic for the quicksort algorithm.
+
+    Created by Jacob Russell
+    """
     if right - left <= 1:
         return L
 
@@ -81,6 +107,11 @@ def _quicksort(L: list[EnrollmentRecord], left, right, property):
     return L
 
 def _partition(L: list[EnrollmentRecord], left, right, property):
+    """
+    Internal partition algorithm for the quicksort algorithm.
+
+    Created by Jacob Russell
+    """
     pivot = right - 1
     right = pivot - 1
 
@@ -103,7 +134,7 @@ def get_algorithm_method(algorithm_type: str):
     :param algorithm_type: "merge" or "quick"
     :return: Sorting algorithm function. Call with <algorithm>(list[EnrollmentRecord], <property>),
     where property is an EnrollmentRecord property ("name", "id", "date")
-
+    :except DeprecationWarning: Pass in insertion/bubble (deprecated algorithms)
     Created by Jacob Russell
     """
     match algorithm_type:

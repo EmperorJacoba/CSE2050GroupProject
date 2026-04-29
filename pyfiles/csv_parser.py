@@ -3,9 +3,7 @@
 # "In Student info, courses and grade
 #
 # s are given as a course code1:grade1;course code2:grade2;"
-from http.cookiejar import debug
 
-from course import Course
 from hash import HashMap
 from student import Grade
 from university import University
