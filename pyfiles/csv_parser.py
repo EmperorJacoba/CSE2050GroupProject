@@ -105,6 +105,7 @@ def read_enrollment_data(uni: University, path: str):
 
 def read_prereqs(path: str) -> HashMap:
     """
+    Takes a string of a path to a csv file containing course prerequisites and returns a hashmap of the required courses
     :param path: Path to cse prerequisites file.
     :return: Custom HashMap of course prerequisites.
 
