@@ -88,7 +88,7 @@ def add_student_data():
 
     university.add_student(id, name)
     print(f"Successfully created new student \"{name}\" (ID: {id})")
-    input("Hit enter to exist back to menu.")
+    input("Hit enter to exit back to menu.")
 
 def prompt_id() -> str:
     """
