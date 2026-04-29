@@ -1,4 +1,9 @@
 class Entry:
+    """
+    Used by the ListMapping class to store keys and their values
+
+    Created by Justin Elak
+    """
     def __init__(self, key, item):
         self.key = key
         self.item = item
@@ -7,6 +12,11 @@ class Entry:
         return f"{self.key} : {self.item}"
 
 class ListMapping:
+    """
+    Used by HashMap in order to avoid hash collision by using separate chaining
+
+    Created by Justin Elak
+    """
     def __init__(self):
         self._entries = []
 
@@ -33,6 +43,11 @@ class ListMapping:
         return ((e.key, e.item) for e in self._entries)
 
 class HashMap:
+    """
+    Standard hashmap similar to Python stand one, uses separate changing to handle hash collisions
+
+    Created by Justin Elak
+    """
     def __init__(self, size=2):
         self._size = size
         self._buckets = [ListMapping() for _ in range(self._size)]
@@ -78,5 +93,5 @@ class HashMap:
 
 if __name__ == "__main__":
     thash = HashMap()
-    thash["poop"] = 2
-    print(thash["poop"])
+    thash["foobar"] = 2
+    print(thash["foobar"])
